@@ -20,7 +20,7 @@ Rails::Initializer.run do |config|
   config.gem "hpricot", :version => '0.8.1'
   config.gem "curb", :version => '0.5.4.0'
   config.gem "capistrano", :version => '2.5.8'
-  config.gem "capistrano-ext", :version => '1.2.1'
+  config.gem "capistrano-ext",  :version => '1.2.1' , :lib => "capistrano"
   config.gem "ferret", :version => "0.11.6"
   config.gem "acts_as_ferret", :version => "0.4.4"
   config.gem "mysql", :version => "2.7"
