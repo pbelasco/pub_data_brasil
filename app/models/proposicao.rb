@@ -1,8 +1,9 @@
 require 'create_or_update'
+require 'rubygems'
+require 'ferret'
+
 class Proposicao < ActiveRecord::Base
-  require 'rubygems'
-  require 'ferret'
-  
+
   acts_as_ferret :fields => {
     :autor => {:boost => 3},
     :ementa => {:boost => 2},
