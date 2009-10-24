@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :paginas
+
   map.search_proposicaos 'proposicoes/busca', :controller => 'proposicaos', :action => 'search', :method => :get
   map.get_search_proposicaos 'proposicoes/busca/:format/:q', :controller => 'proposicaos', :action => 'search', :method => :get
   map.resources :proposicaos, :as => "proposicoes"

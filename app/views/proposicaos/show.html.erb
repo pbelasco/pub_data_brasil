@@ -1,40 +1,4 @@
 <h2>Detalhes da Proposição Legislativa: <%=h @proposicao.descricao %></h2>
 
-<div class="proposicao" id="<%= @proposicao.id_sileg %>">
-<p>
-  <b>Orgao:</b>
-  <%=h @proposicao.orgao %>
-</p>
+	<%= render :partial => 'proposicao', :proposicao => @proposicao %>
 
-<p>
-  <b>Situacao:</b>
-  <%=h @proposicao.situacao %>
-</p>
-
-<p>
-  <b>Autor:</b>
-  <%=h @proposicao.autor %>
-</p>
-
-<p>
-  <b>Apresentacao:</b>
-  <%=h @proposicao.apresentacao %>
-</p>
-
-<p>
-  <b>Link:</b>
-  <%=h @proposicao.link %>
-</p>
-
-<p>
-  <b>Ementa:</b>
-  <%=h @proposicao.ementa %>
-</p>
-
-<p>
-  <b>Situacao:</b>
-  <%=h @proposicao.situacao %>
-</p>
-
-</div>
-<%= link_to 'Voltar', proposicaos_path %>

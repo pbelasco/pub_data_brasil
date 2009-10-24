@@ -1,0 +1,24 @@
+<h1>Editing pagina</h1>
+
+<% form_for(@pagina) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :titulo %><br />
+    <%= f.text_field :titulo %>
+  </p>
+  <p>
+    <%= f.label :secao %><br />
+    <%= f.text_field :secao %>
+  </p>
+  <p>
+    <%= f.label :conteudo %><br />
+    <%= f.text_area :conteudo %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @pagina %> |
+<%= link_to 'Back', paginas_path %>

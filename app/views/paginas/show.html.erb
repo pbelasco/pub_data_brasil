@@ -1,0 +1,18 @@
+<p>
+  <b>Titulo:</b>
+  <%=h @pagina.titulo %>
+</p>
+
+<p>
+  <b>Secao:</b>
+  <%=h @pagina.secao %>
+</p>
+
+<p>
+  <b>Conteudo:</b>
+  <%=h @pagina.conteudo %>
+</p>
+
+
+<%= link_to 'Edit', edit_pagina_path(@pagina) %> |
+<%= link_to 'Back', paginas_path %>
