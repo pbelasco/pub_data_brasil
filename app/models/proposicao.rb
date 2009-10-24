@@ -1,4 +1,3 @@
-require 'create_or_update'
 class Proposicao < ActiveRecord::Base
   require 'rubygems'
   require 'ferret'

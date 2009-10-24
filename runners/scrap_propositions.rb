@@ -3,6 +3,7 @@ require 'rubygems'
 require 'hpricot'
 require 'curb'
 require "iconv"
+require 'create_or_update'
 
 # recebe Input e retorna parsed_vars ou false em caso de erro
 def parse_input(args)
