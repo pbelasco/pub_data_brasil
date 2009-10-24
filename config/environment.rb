@@ -21,11 +21,10 @@ Rails::Initializer.run do |config|
   config.gem "curb", :version => '0.5.4.0'
   config.gem "capistrano", :version => '2.5.8'
   config.gem "capistrano-ext",  :version => '1.2.1' , :lib => "capistrano"
+  config.gem "mysql", :version => "2.7"
   config.gem "ferret", :version => "0.11.6"
   config.gem "acts_as_ferret", :version => "0.4.4"
-  config.gem "mysql", :version => "2.7"
-
-
+  
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
