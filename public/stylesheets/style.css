@@ -1,0 +1,59 @@
+body {
+	margin:.5em;
+	padding:0;
+	font-family:Helvetica, Arial, sans;
+	font-size:.8em;
+	line-height: 1.3em;
+}
+.proposicao {
+	border-bottom: 1px #666 solid;
+	background: #dff;
+	padding:.5em;
+	margin:.5em;
+}
+.meta {
+	font-weight: 600;
+}
+
+/* ================================ */
+/* = Paginacao                    = */
+/* ================================ */
+
+.pagination {
+	margin:1em .5em;
+}
+.pagination ul {
+	margin:1em 0 2em 0;
+	padding:0;
+	font-size: .8em;
+}
+.pagination ul li {
+	list-style-type: none;
+	display: inline;
+	padding:.3em;
+	border: 1px solid #ccf;
+	margin: 0 .2em;
+}
+.pagination ul li a {
+	padding:.3em;
+	margin: 0;
+}
+
+.disablepage {
+	background:#DDDDDD none repeat scroll 0 0;
+}
+.currentpage {
+	background:#DDDDDD none repeat scroll 0 0;
+}
+.nextpage {
+	background:#ccf none repeat scroll 0 0;
+}
+
+/* ================================== */
+/* = Estilos de resultados de busca = */
+/* ================================== */
+
+.highlight {
+	background:#ff0;
+	padding:.3em;
+}

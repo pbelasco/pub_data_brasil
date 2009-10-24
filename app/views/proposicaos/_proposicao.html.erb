@@ -1,0 +1,34 @@
+  <div class="proposicao" id="<%= proposicao.id_sileg %>">
+	<%= "Relevância: #{(proposicao.ferret_score*100).round}" + "%" unless proposicao.ferret_score.nil? %> 
+	<div id="id_sileg" class="atributo">
+		<span class="meta">Descrição:</span> 
+		<%=h proposicao.descricao %> 
+	</div>
+	<div id="id_sileg" class="atributo">
+		<span class="meta">Código da proposição:</span> 
+		<%=h proposicao.id_sileg %> 
+	</div>
+    <div id="orgao" class="atributo">
+		<span class="meta">Órgão:</span> 
+		<%=h proposicao.orgao %>
+	</div>
+    <div id="situacao" class="atributo">
+		<span class="meta">Situação:</span> 
+		<%=h proposicao.situacao %>
+	</div>
+    <div id="autor" class="atributo">
+		<span class="meta">Autor:</span>
+		<%=h proposicao.autor %>
+	</div>
+    <div id="apresentacao" class="atributo">
+		<span class="meta">Data da Apresentação:</span>
+		<%=h proposicao.apresentacao %>
+	</div>
+    <div id="ementa" class="atributo">
+		<span class="meta">Ementa:</span>
+		<%=h proposicao.ementa %>
+	</div>
+    <div class="nav"> <%= link_to 'Detalhes', proposicao %></div>
+    <div class="nav"> <%= link_to 'XML', proposicao_path( proposicao.id, :format => :xml) %></div>
+    <div class="nav"><%= link_to "Consultar na página da câmara", "http://www.camara.gov.br/sileg/"+ proposicao.link %> </div>
+  </div>

@@ -1,0 +1,12 @@
+== PubDataBrasil
+
+Projeto de raspagem (scraping) de dados do congresso brasileiro para fornecimento de informações públicas 
+via API REST
+
+== Como começou
+
+O desenvolvimento foi inspirado por e para projetos como o parlamentoaberto.org e congressoaberto.org
+
+== Licença
+
+GPLv3.

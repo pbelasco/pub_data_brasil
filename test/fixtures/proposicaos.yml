@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  orgao: MyString
+  situacao: MyText
+  autor: MyString
+  apresentacao: 2009-10-22
+  link: MyString
+  ementa: MyText
+  situacao: MyText
+
+two:
+  orgao: MyString
+  situacao: MyText
+  autor: MyString
+  apresentacao: 2009-10-22
+  link: MyString
+  ementa: MyText
+  situacao: MyText
