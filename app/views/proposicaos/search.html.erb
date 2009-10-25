@@ -7,7 +7,6 @@ Resultados de busca em proposições para <span class="highlight"><%= "'#{params
 <% @proposicaos.each do |proposicao| %>
 	<%= render :partial => 'proposicao', :collection => @proposicaos %>
 <% end %>
-
 <%= render :partial => 'shared/paginate', :locals => { :collection => @proposicaos }%>
 
 <%# link_to 'Nova proposicao', new_proposicao_path %>

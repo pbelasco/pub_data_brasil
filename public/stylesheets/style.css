@@ -4,7 +4,9 @@ h3 { font-size: 1.61em; }
 h4 { font-size: 1.44em; }
 h1, h2, h3, h4 { line-height: 1.9em; }
 p {margin: 1em 0;} 
-
+ul, ol { margin-left:2em; }
+ul li {list-style-type: circle;}
+ol li {list-style-type: decimal;}
 body {
 	margin:.5em;
 	padding:0;
@@ -12,7 +14,6 @@ body {
 	font-size:.8em;
 	line-height: 1.4em;
 }
-
 #ft {
 	border-top: 1px solid #666;
 }

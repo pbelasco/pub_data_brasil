@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+   <title>Votaio: gov.data.br</title>
+   <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
+   <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
+</head>
+<body>
+<div id="doc" class="yui-t7">
+   <div id="hd" role="banner">
+	<img src="/images/votaio_br_main.jpg" alt="votaio - open.gov.data - brasil">
+   </div>
+   <div id="bd" role="main">
+	<div class="yui-gd">
+    <div class="yui-u first">
+	    <ul class="menu">
+		  <li><a href="/" title="Home Page">Home</a></li>
+	      <li><a href="proposicoes" title="Listagem e busca de proposições legislativas">Proposições</a></li>
+	      <li><a href="api.html" title="Documentação da API">API</a></li>
+	      </ul>
+	    </div>
+    <div class="yui-u">
+		<div id="content">
+	      <h3>API</h3>
+	      <p><strong>A</strong>pplication <strong>P</strong>rogrammig <strong>I</strong>nterface, ou Interface de programação de Aplicativos é um conjunto de rotinas e padrões estabelecidos por um software para utilização das suas funcionalidades por outros programas e aplicações que não têm interesse nos detalhes da sua implementação mas usufruem dos seus serviços e dados de uma forma padronizada e acessível em linguagam de máquina.</p>
+	      <p>Durante a fase de testes e implmentação, a api do Votaio não irá requerer nenhum tipo de autenticação para o acesso aos dados. Isso estará sujeito a mudanças em benefício da estabilidade do sistema assim que tivermos demanda sufuciente para fornecer de forma rápida e com confiabilidade os dados públicos que nos comprometermos a fornecer, com um nível excelente de confiabilidade e qualidade.</p>
+	      <p>A proposta do votaio.com é ser uma fonte de dados públicos por meio de uma interface <a href="http://pt.wikipedia.org/wiki/REST">REST</a> que aceita os verbos de leitura do protocolo HTTP e responde em XML, Json ou texto puro de forma consistente, virtualmente tudo que há disponível de dados sobre o cotidiano político do país.</p>
+	      <h3>Proposições</h3>
+	      <p>Consultas poposições</p>
+	      <p>Uma proposição legislativa é descrita por </p>
+	      <ul>
+	        <li>identificador único (id_sileg)</li>
+	        <li>descrição composta de um código alfabético de 3 letras, um numero sequencial e o ano </li>
+	        <li>despacho, ou ordem que acompanha a proposição</li>
+	        <li>ementa</li>
+	        <li>orgão propositor</li>
+	        <li>apresentacao que informa a data da proposição no formato &quot;YYYY-MM-DD&quot;</li>
+	      </ul>
+	      <p>O endereço votaio.com/proposicoes/&lt;numero_da_proposicao&gt; devolve o conteúdo da proposição e seus andamentos passados, em ordem decrescente de data.</p>
+	      <p>Para simples listagem e descrição de proposição, os dados estão acessíveis por:</p>
+	      <ul>
+	        <li>http://localhost:3000/proposicoes/&lt;id igual ao da camara&gt; para retorno html ou </li>
+	        <li>http://localhost:3000/proposicoes&lt;id igual ao da camara&gt;.xml</li>
+	        </ul>
+	      <h3>Busca</h3>
+	      <p>Para busca aproximada você pode contar com:</p>
+	      <ul>
+	        <li>http://localhost:3000/proposicoes/busca/?q=&lt;chave de pesquisa&gt; para retorno html</li>
+	        <li>http://localhost:3000/proposicoes/busca/[xml | rss | json]/&lt;chave de pesquisa&gt; para retorno formatado </li>
+	        </ul>
+	      <p>Os resultados de busca aproximada levam em conta a presença e repetição de termos nos seguintes campos, por ordem de importância:</p>
+	      <ol>
+	        <li>autor</li>
+	        <li>descrição</li>
+	        <li>ementa </li>
+	        <li>código</li>
+	        </ol>
+	      <p>Ou seja uma proposição do deputado Emilio Batista é mostrada antes de uma ocorrência tratando sobre o nome de uma rua chamada Emilio Batista.</p>
+	      <p>Os termos da pesquisa podem ser pesquisados com operadores de exclusão, inclusão, e associações do tipo E e OU lógicas. Por padrão, termos separados por espaços são entendidos como concatenados por operadores do tipo OU lógico.</p>
+	      <p>&nbsp;</p>
+		</div>
+    </div>
+</div>
+
+	</div>
+   <div id="ft" role="contentinfo"><p>Votaio - open data.gov.br. Versão 001 Beta. No rights reserved</p></div>
+</div>
+</body>
+</html>
