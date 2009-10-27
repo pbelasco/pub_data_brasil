@@ -46,24 +46,41 @@ def get_parsed_page(url)
   
   c = Curl::Easy.new("#{url}") do |curl|
     curl.headers["User-Agent"] = "pub_data client v.001Beta Ruby"
-    # curl.verbose = true
+    curl.verbose = true
     curl.verbose = false
   end
-
   puts "tentando obter resultado de #{url}"
-  c.perform
-  puts "código de resposta: #{c.response_code}"
-  while c.response_code != 200 do
-    c.perform
-    puts "código de resposta: #{c.response_code}"
-    puts "aguardando 10 segundos para tentar novamente..."
-    sleep 10
-  end
+  
+  c = perform_req(c)
   # cuida do encoding
   enc = Iconv.new('UTF-8', 'ISO-8859-1')
-  Hpricot.parse(enc.iconv(c.body_str))
+  
+  doc = Hpricot.parse( enc.iconv(c.body_str), :fixup_tags => true )
+  # puts doc.html
+  doc
 end
 
+# Método recursivo para realizar requisição dados do servidor
+def perform_req(curl_obj)
+  c = curl_obj
+  begin 
+    c.perform
+    if c.response_code != 200 
+      puts "código de resposta: #{c.response_code}"
+      puts "aguardando 1 segundos para tentar novamente..."
+      sleep 1
+      c = perform_req(curl_obj)
+    else 
+      return c # Condição de parada na pilha
+    end
+  rescue Exception => e
+    puts e.inspect
+    puts "erro no servidor, devolvendo nulo"
+    puts "aguardando 1 segundos para tentar novamente..."
+    sleep 1
+    return perform_req(c)
+  end
+end
 
 def get_the_rows(doc)
   # Tabela que contem os elementos

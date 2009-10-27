@@ -9,6 +9,8 @@ class ProposicaosController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @proposicaos }
+      format.json { render :json => @proposicaos.to_json }
+      format.yaml { render :inline => [@proposicaos.to_yaml, @proposicaos.map {|p| p.to_yaml}] }
     end
   end
 
@@ -21,6 +23,8 @@ class ProposicaosController < ApplicationController
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @proposicaos }
+        format.json { render :json => @proposicao.to_json }
+        format.yaml { render :inline =>  [@proposicao.to_yaml, @proposicao.map {|p| p.to_yaml}] }
       end
     else
       flash[:warning] = "Por favor informe uma chave de pesquisa"
@@ -36,19 +40,25 @@ class ProposicaosController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @proposicao }
+      format.json { render :json => @proposicao.to_json }
+      format.yaml { render :inline => @proposicao.to_yaml }
+      
     end
   end
 
   # GET /proposicaos/new
   # GET /proposicaos/new.xml
-  def new
-    @proposicao = Proposicao.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @proposicao }
-    end
-  end
+  # def new
+  #   @proposicao = Proposicao.new
+  # 
+  #   respond_to do |format|
+  #     format.html # new.html.erb
+  #     format.xml  { render :xml => @proposicao }
+  #     format.json { render :json => @proposicao.to_json }
+  #     format.yaml { render :yaml => @proposicao.to_yaml }
+  #     
+  #   end
+  # end
 
   # GET /proposicaos/1/edit
   # def edit

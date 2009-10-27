@@ -2,6 +2,27 @@ set :stages, %w(staging production)
 set :default_stage, "staging"
 require File.expand_path("#{File.dirname(__FILE__)}/../vendor/gems/capistrano-ext-1.2.1/lib/capistrano/ext/multistage")
 
+namespace :ferret do
+  desc "Restart the ferret server instance"
+  task :restart  do
+    run "cd #{deploy_to}/#{current_dir} && " +
+    "./script/ferret_server --root='./' -e #{rails_env} stop; "  +
+    "./script/ferret_server --root='./' -e #{rails_env} start; " 
+  end
+  desc "Start the ferret server instance"
+  task :start do
+    run "cd #{deploy_to}/#{current_dir} && " +
+    "./script/ferret_server --root='./' -e #{rails_env} stop; " 
+  end
+  desc "Stop the ferret server instance"
+  task :start do
+    run "cd #{deploy_to}/#{current_dir} && " +
+    "./script/ferret_server --root='./' -e #{rails_env} start; " 
+  end
+end
+
+
+
 namespace :db do
   desc 'Dumps the production database to db/production_data.sql on the remote server'
   task :remote_db_dump, :roles => :db, :only => { :primary => true } do

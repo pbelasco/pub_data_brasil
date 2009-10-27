@@ -9,7 +9,35 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091024022659) do
+ActiveRecord::Schema.define(:version => 20091027191457) do
+
+  create_table "andamentos", :force => true do |t|
+    t.integer  "proposicao_id"
+    t.date     "data"
+    t.text     "titulo"
+    t.text     "descricao"
+    t.integer  "anexo_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "media_link"
+    t.string   "local"
+  end
+
+  create_table "anexos", :force => true do |t|
+    t.string   "titulo"
+    t.integer  "andamento_id"
+    t.integer  "poposicao_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "paginas", :force => true do |t|
+    t.string   "titulo"
+    t.string   "secao"
+    t.text     "conteudo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "proposicaos", :force => true do |t|
     t.integer  "id_sileg"
@@ -23,6 +51,10 @@ ActiveRecord::Schema.define(:version => 20091024022659) do
     t.text     "situacao"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "media_link"
+    t.text     "explicacao"
+    t.text     "apreciacao"
+    t.text     "tramitacao"
   end
 
   create_table "sessions", :force => true do |t|

@@ -30,5 +30,7 @@
 	</div>
 	<span class="nav"> <%= link_to 'Detalhes', proposicao_path(proposicao.id_sileg) %></span> | 
 	<span class="nav"> <%= link_to 'XML', proposicao_path( proposicao.id_sileg, :format => :xml) %></span> | 
+	<span class="nav"> <%= link_to 'Json', proposicao_path( proposicao.id_sileg, :format => :xml) %></span> | 
+	<span class="nav"> <%= link_to 'YAML', proposicao_path( proposicao.id_sileg, :format => :xml) %></span> | 
 	<span class="nav"><%= link_to "Consultar na página da câmara", "http://www.camara.gov.br/sileg/"+ proposicao.link %> </span> 
 </div>

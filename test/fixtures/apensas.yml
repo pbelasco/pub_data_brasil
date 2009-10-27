@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  original: 1
+  apensada: 1
+  tag: 
+
+two:
+  original: 1
+  apensada: 1
+  tag: 

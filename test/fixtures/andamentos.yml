@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  proposicao: 
+  data: 2009-10-26
+  titulo: MyText
+  descricao: MyText
+  anexo: 
+
+two:
+  proposicao: 
+  data: 2009-10-26
+  titulo: MyText
+  descricao: MyText
+  anexo: 

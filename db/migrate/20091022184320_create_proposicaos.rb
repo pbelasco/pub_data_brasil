@@ -9,9 +9,7 @@ class CreateProposicaos < ActiveRecord::Migration
       t.date :apresentacao
       t.text :ementa
       t.text :despacho
-      t.text :situacao
-      # Somente das páginas de detalhes
-      
+      t.text :situacao  
       t.timestamps
     end
     # execute "alter table proposicaos modify column id_sileg bigint unsigned primary key"
