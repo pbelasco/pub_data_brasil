@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091027191457) do
+ActiveRecord::Schema.define(:version => 20091027204626) do
 
   create_table "andamentos", :force => true do |t|
     t.integer  "proposicao_id"
@@ -21,12 +21,20 @@ ActiveRecord::Schema.define(:version => 20091027191457) do
     t.datetime "updated_at"
     t.string   "media_link"
     t.string   "local"
+    t.integer  "id_sileg"
   end
 
   create_table "anexos", :force => true do |t|
     t.string   "titulo"
     t.integer  "andamento_id"
     t.integer  "poposicao_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "apensas", :force => true do |t|
+    t.integer  "original"
+    t.integer  "apensada"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -66,5 +74,18 @@ ActiveRecord::Schema.define(:version => 20091027191457) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "taggeds", :force => true do |t|
+    t.integer  "tag_id"
+    t.integer  "proposicao_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tags", :force => true do |t|
+    t.string   "termo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

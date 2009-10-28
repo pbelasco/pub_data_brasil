@@ -1,6 +1,9 @@
-require 'create_or_update'
-
 class Proposicao < ActiveRecord::Base
+
+  has_many :andamentos
+  has_many :taggeds
+  has_many :tags, :through => :taggeds
+
   acts_as_ferret :fields => {
     :autor => {:boost => 3},
     :ementa => {:boost => 2},

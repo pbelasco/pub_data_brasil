@@ -5,7 +5,7 @@ class ProposicaosController < ApplicationController
     order = "id DESC" || params[:order]
     sort  = "DESC" || params[:sort]
     @num_proposicaos = Proposicao.count(:all)
-    @proposicaos = Proposicao.find(:all, :order => "'#{order} #{sort}'", :page => {:size => 10, :current => params[:page], :first => 1})
+    @proposicaos = Proposicao.find(:all, :order => "'#{order} #{sort}'", :include => :andamentos, :page => {:size => 10, :current => params[:page], :first => 1})
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @proposicaos }
@@ -23,8 +23,8 @@ class ProposicaosController < ApplicationController
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @proposicaos }
-        format.json { render :json => @proposicao.to_json }
-        format.yaml { render :inline =>  [@proposicao.to_yaml, @proposicao.map {|p| p.to_yaml}] }
+        format.json { render :json =>  [@proposicao.to_json, @proposicaos.map {|p| p.to_json}] }
+        format.yaml { render :inline =>  [@proposicao.to_yaml, @proposicaos.map {|p| p.to_yaml}] }
       end
     else
       flash[:warning] = "Por favor informe uma chave de pesquisa"
@@ -36,12 +36,23 @@ class ProposicaosController < ApplicationController
   # GET /proposicaos/1.xml
   def show
     # @proposicao = Proposicao.find(params[:id])
-    @proposicao = Proposicao.find_by_id_sileg(params[:id])
+    @proposicao = Proposicao.find_by_id_sileg(params[:id], :include => :andamentos, :include => :tags)
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @proposicao }
       format.json { render :json => @proposicao.to_json }
       format.yaml { render :inline => @proposicao.to_yaml }
+      
+    end
+  end
+  
+  def descricao
+    # @proposicao = Proposicao.find(params[:id])
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => Proposicao.new.class }
+      format.json { render :json => Proposicao.inspect.to_json }
+      format.yaml { render :inline => Proposicao.inspect.to_yaml }
       
     end
   end

@@ -14,6 +14,17 @@ module CreateOrUpdate
       record  
     end  
 
+    def create_or_update_by_multiple(fields, options = {})  
+      # fields = fields.to_a
+      find_values = {}
+      fields.each {|f| find_values.update( { f => options.delete(f) } )}
+      record = find(:first, :conditions => find_values) || self.new  
+      find_values.each {|k,v| record.send(k.to_s + "=", v)}      
+      record.attributes = options  
+      record.save!
+      record
+    end
+    
     def method_missing_with_create_or_update(method_name, *args)  
       if match = method_name.to_s.match(/create_or_update_by_([a-z0-9_]+)/)  
         field = match[1].to_sym  
@@ -22,6 +33,9 @@ module CreateOrUpdate
         method_missing_without_create_or_update(method_name, *args)  
       end  
     end  
+
+
+
 
     alias_method_chain :method_missing, :create_or_update
   end

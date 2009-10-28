@@ -57,6 +57,7 @@ end
 # Método recursivo para realizar requisição dados do servidor
 def perform_req(curl_obj)
   c = curl_obj
+  
   begin 
     c.perform
     if c.response_code != 200 
@@ -73,6 +74,9 @@ def perform_req(curl_obj)
     puts "aguardando 1 segundos para tentar novamente..."
     sleep 1
     return perform_req(c)
+  rescue NoMethodError => e
+    puts "erro no programa... matando a pau... ratatatata tatatata..."
+    nil
   end
 end
 
@@ -87,6 +91,10 @@ def get_the_andamento_rows(doc)
   rows
 end
 
+def parse_tags(doc)
+  tags = doc.html.split(/[Indexa][^o ]*o: <\/b>/)[1].split("<b>")[0].strip || nil
+  inspect_tags(tags)
+end
 def parse_prop_detalhes(doc)
   puts "começando parsing dos andamentos..."
   prop_detalhes = []
@@ -99,9 +107,11 @@ def parse_prop_detalhes(doc)
     h[:apreciacao] = the_html.split(/[Aprecia][^o ]*o: <\/b>/)[1].split("<b>")[0].strip || nil
     h[:tramitacao] = the_html.split(/[Regime de tramita][^o ]*o: <\/b>/)[1].split("<b>")[0].strip || nil
     h[:despacho] = the_html.split(/[Despacho :]: <\/b>/)[1].split("<b>")[0].strip || nil 
-    h[:tags] = the_html.split(/[Indexa][^o ]*o: <\/b>/)[1].split("<b>")[0].strip || nil
-    inspect_tags(h[:tags])
+    h[:id_sileg] = ARGV[0].to_i
+    
     puts "#{h.inspect}\nDetalhes de Proposta ----------------------------------------" unless h.empty?
+    
+    # Cria/atualiza prop
     h
   end
 end
@@ -115,17 +125,22 @@ def parse_andamentos(rows)
     unless row.empty? 
       # link que contem o id e o cod/ano da proposicao
       h = Hash.new("Este andamento")  
-      h[:local]      = (row/"b").first.inner_html.to_s.strip.split("&nbsp;").join(" ").gsub /(\r\n)|\t/, "" || nil
-      h[:data]       = (row/"td")[0].inner_html.strip.split("/").reverse.join("-") || nil
+      h[:local] = (row/"b").first.inner_html.to_s.strip.split("&nbsp;").join(" ").gsub(/(\r\n)|\t/, "") || nil
+      h[:data] = (row/"td")[0].inner_html.strip.split("/").reverse.join("-") || nil
       h[:descricao]  = (row/"td[2]//")[5].to_s.strip || nil   
-      h[:media_link] = (row/'a[@HREF]').to_s.map { |s| s.split("HREF=\"")[1].split("\" ")[0] || nil } 
+      h[:media_link] = (row/'a[@HREF]').to_s.map { |s| s.split("HREF=\"")[1].split("\" ")[0] || nil }
+      h[:id_sileg] = ARGV[0].to_i
+       
       puts "#{h.inspect}\nAndamento --------------------------------------------------" unless row.empty?
       andamentos << h
-
     end 
-  end 
+  end   
   puts "criados/atualizados #{andamentos.size} registros"
   andamentos
+end
+
+def inspect_detalhes(h)
+  h.inspect
 end
 
 def create_or_update_prop_batch(h)
@@ -139,32 +154,52 @@ def create_or_update_prop(field, h)
 end
 
 # Resolver modo de keep_track do andamento
-def create_or_update_andamento_batch(h)
+def create_or_update_andamento_batch(prop, h)
   h.each do |ha|
     create_or_update_andamento(:id_sileg, ha)
   end
 end
 
-def create_or_update_andamento(field, h)
-  Andamento.create_or_update_by(field, h)
-end
-
-def create_or_update_tags(field, tags_str)
-  tag.create_or_update_by(field, h)
-end
-
-def inspect_tags(tags_str = "")
-  tags_str.split(",").each do |t|
-    puts t.strip unless t.strip.match("^[_].*") 
+def create_or_update_andamentos(fields, andamentos, prop)
+  prop.andamentos.each {|a| a.destroy}
+  andamentos.each do |h|
+    a = Andamento.create_or_update_by_multiple(fields, h)
+    prop.andamentos << a
   end
 end
 
+def create_or_update_tags(prop, tags_str, field = :termo)
+  prop.taggeds.each {|tagged| tagged.destroy}
+  tags_str.split(",").each do |t|
+    unless t.strip.match("^[_].*") 
+      tag = Tag.create_or_update_by(field, {:termo => t}) 
+      prop.tags << tag 
+    end
+  end unless tags_str.nil?
+end
+
+def inspect_tags(tags_str = "")
+  
+  tags_str.split(",").each do |t|
+    puts t.strip unless t.strip.match("^[_].*") 
+  end
+  puts "Tags   --------------------------------------------------" 
+  
+end
+
 # create_or_update_prop_batch(parse_elements(get_the_andamento_rows(get_parsed_page(make_url(parse_input(ARGV))))))
-input = parse_input(%W(428043)) #453443 428043 164323
+input = parse_input(ARGV) #453443 428043 164323
 url = make_url(input)
 parsed_page = get_parsed_page(url)
-rowz = get_the_andamento_rows(parsed_page)
-parsed_rows = parse_andamentos(rowz)
-parse_prop_detalhes(parsed_page)
+
+prop_desc = parse_prop_detalhes(parsed_page)
+prop = create_or_update_prop(:id_sileg, prop_desc)
+
+tags_desc = parse_tags(parsed_page)
+create_or_update_tags(prop, tags_desc, :termo)
+
+andamento_desc = get_the_andamento_rows(parsed_page)
+andamentos = parse_andamentos(andamento_desc)
+create_or_update_andamentos([:id_sileg, :data, :local, :descricao, :media_link], andamentos, prop)
 
 # create_or_update_prop_batch(parsed_rows)
