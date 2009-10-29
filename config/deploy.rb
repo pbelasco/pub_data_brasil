@@ -2,25 +2,23 @@ set :stages, %w(staging production)
 set :default_stage, "staging"
 require File.expand_path("#{File.dirname(__FILE__)}/../vendor/gems/capistrano-ext-1.2.1/lib/capistrano/ext/multistage")
 
-namespace :ferret do
-  desc "Restart the ferret server instance"
-  task :restart  do
-    run "cd #{deploy_to}/#{current_dir} && " +
-    "./script/ferret_server --root='./' -e #{rails_env} stop; "  +
-    "./script/ferret_server --root='./' -e #{rails_env} start; " 
+namespace :sphinx do
+  desc "Stop the sphinx server"
+  task :stop_sphinx , :roles => :app do
+    run "cd #{current_path} && rake thinking_sphinx:stop RAILS_ENV=#{rails_env}"
   end
-  desc "Start the ferret server instance"
-  task :start do
-    run "cd #{deploy_to}/#{current_dir} && " +
-    "./script/ferret_server --root='./' -e #{rails_env} stop; " 
-  end
-  desc "Stop the ferret server instance"
-  task :start do
-    run "cd #{deploy_to}/#{current_dir} && " +
-    "./script/ferret_server --root='./' -e #{rails_env} start; " 
-  end
-end
 
+  desc "Start the sphinx server" 
+  task :start_sphinx, :roles => :app do
+    run "cd #{current_path} && rake thinking_sphinx:configure RAILS_ENV=#{rails_env} && rake thinking_sphinx:start RAILS_ENV=#{rails_env}"
+  end
+
+  desc "Restart the sphinx server"
+  task :restart_sphinx, :roles => :app do
+    stop_sphinx
+    start_sphinx
+  end  
+end
 
 
 namespace :db do

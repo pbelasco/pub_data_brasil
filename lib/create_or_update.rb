@@ -33,14 +33,9 @@ module CreateOrUpdate
         method_missing_without_create_or_update(method_name, *args)  
       end  
     end  
-
-
-
-
     alias_method_chain :method_missing, :create_or_update
   end
 end
-
 
 module ActiveRecord
   class Base

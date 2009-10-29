@@ -18,8 +18,8 @@ class ProposicaosController < ApplicationController
     unless params[:q].blank?
       # params[:q] = sanitize(params[:q])
       params[:p] = 1 unless params[:p]
+      # @proposicaos = Proposicao.paginating_ferret_search({:q => "#{params[:q]}~0.4", :page_size => 10, :current => params[:p]})
       @proposicaos = Proposicao.paginating_ferret_search({:q => "#{params[:q]}~0.4", :page_size => 10, :current => params[:p]})
-      @total_hits = Proposicao.find_with_ferret("#{params[:q]}~0.4", :lazy => true).total_hits
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @proposicaos }

@@ -6,32 +6,32 @@ require "iconv"
 
 # recebe Input e retorna parsed_vars ou false em caso de erro
 def parse_input(args)
-  case args
-  when args.size < 1
-    puts "Modo de uso 'scrap_propositions_detalhes.rb < id_sileg >"
-    puts "Exemplo"
+  
+  parsed_vars = []
+  if args[0].to_s.include?('id=')
+    puts "ok, começando..."
+    parsed_vars << args[0].split("=")[1]
+    parsed_vars
+  elsif args[0].include?('range=')
+    puts "ok, começando..."
+    range=args[0].split("=")[1]
+    puts "range = #{range}"
+    Proposicao.find(:all, :limit => range).each {|p| parsed_vars << p.id_sileg }
+    parsed_vars
+  else 
+    puts "Modo de uso 'scrap_propositions_detalhes.rb <id=<id_sileg> | range=<primeira>,<range>>'"
+    puts "Exemplo:"
     puts "Carrega as informacoes da proposicao: "
-    puts "exemplo"
-    puts "$script/runner scrap_propositions_detalhes.rb '164323'"
-    puts ""
+    puts "$script/runner scrap_propositions_detalhes.rb id=21424124"
+    puts "$script/runner scrap_propositions_detalhes.rb range=0,10"
     puts "pbelasco 2009"
     puts "GPLv3"
-    return false
-  when (args[0].to_i.nil?)
-    puts "Informe um código numérica válido"
-    return false
-  else 
-    puts "ok, começando..."
-    parsed_vars = []
-    parsed_vars << args[0].to_i
-    puts "buscando página de proposição de #{parsed_vars[0]}"
-    parsed_vars
-    
+    nil
   end
 end
 
-def make_url(vars)
-  url = "http://www.camara.gov.br/sileg/Prop_Detalhe.asp?id=#{vars[0]}"
+def make_url(var)
+  url = "http://www.camara.gov.br/sileg/Prop_Detalhe.asp?id=#{var}"
 end
 
 # recebe url e devolve hpricot parsed doc string
@@ -98,26 +98,23 @@ end
 def parse_prop_detalhes(doc)
   puts "começando parsing dos andamentos..."
   prop_detalhes = []
-  the_html = (doc/"/html/body/table//tr[2]/td/p").html
+  h = Hash.new("Este andamento")  
   unless doc.nil?
-    # link que contem o id e o cod/ano da proposicao
-    h = Hash.new("Este andamento")  
     h[:media_link] = (doc/"/html/body/table//tr[2]/td[2]/a").to_s.map { |s| s.split("HREF=\"")[1].split("\" ")[0] || nil } 
-    h[:explicacao] = the_html.split(/[Explica][^o ]*o da Ementa: <\/b>/)[1].split("<b>")[0].strip || nil
-    h[:apreciacao] = the_html.split(/[Aprecia][^o ]*o: <\/b>/)[1].split("<b>")[0].strip || nil
-    h[:tramitacao] = the_html.split(/[Regime de tramita][^o ]*o: <\/b>/)[1].split("<b>")[0].strip || nil
-    h[:despacho] = the_html.split(/[Despacho :]: <\/b>/)[1].split("<b>")[0].strip || nil 
     h[:id_sileg] = ARGV[0].to_i
-    
+    # link que contem o id e o cod/ano da proposicao
+    unless (doc/"/html/body/table//tr[2]/td/p").empty?
+      h[:explicacao] =  (doc/"/html/body/table//tr[2]/td/p").html.split(/[Explica][^o ]*o da Ementa: <\/b>/)[1].split("<b>")[0].strip || nil
+      h[:apreciacao] =  (doc/"/html/body/table//tr[2]/td/p").html.split(/[Aprecia][^o ]*o: <\/b>/)[1].split("<b>")[0].strip || nil
+      h[:tramitacao] =  (doc/"/html/body/table//tr[2]/td/p").html.split(/[Regime de tramita][^o ]*o: <\/b>/)[1].split("<b>")[0].strip || nil
+      h[:despacho]   =  (doc/"/html/body/table//tr[2]/td/p").html.split(/[Despacho :]: <\/b>/)[1].split("<b>")[0].strip || nil 
+    end
     puts "#{h.inspect}\nDetalhes de Proposta ----------------------------------------" unless h.empty?
     
     # Cria/atualiza prop
     h
   end
 end
-
-
-
 def parse_andamentos(rows)
   puts "começando parsing dos andamentos..."
   andamentos = []
@@ -187,19 +184,21 @@ def inspect_tags(tags_str = "")
   
 end
 
-# create_or_update_prop_batch(parse_elements(get_the_andamento_rows(get_parsed_page(make_url(parse_input(ARGV))))))
-input = parse_input(ARGV) #453443 428043 164323
-url = make_url(input)
-parsed_page = get_parsed_page(url)
+parsed_input = parse_input(ARGV)
+puts parsed_input.inspect
+unless parsed_input.empty? 
+  parsed_input.each do |id|
+    url = make_url(id)
+    parsed_page = get_parsed_page(url)
 
-prop_desc = parse_prop_detalhes(parsed_page)
-prop = create_or_update_prop(:id_sileg, prop_desc)
+    prop_desc = parse_prop_detalhes(parsed_page)
+    prop = create_or_update_prop(:id_sileg, prop_desc)
 
-tags_desc = parse_tags(parsed_page)
-create_or_update_tags(prop, tags_desc, :termo)
+    tags_desc = parse_tags(parsed_page)
+    create_or_update_tags(prop, tags_desc, :termo)
 
-andamento_desc = get_the_andamento_rows(parsed_page)
-andamentos = parse_andamentos(andamento_desc)
-create_or_update_andamentos([:id_sileg, :data, :local, :descricao, :media_link], andamentos, prop)
-
-# create_or_update_prop_batch(parsed_rows)
+    andamento_desc = get_the_andamento_rows(parsed_page)
+    andamentos = parse_andamentos(andamento_desc)
+    create_or_update_andamentos([:id_sileg, :data, :local, :descricao, :media_link], andamentos, prop)
+  end  
+end

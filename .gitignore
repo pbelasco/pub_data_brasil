@@ -2,3 +2,6 @@ index/*
 log*
 .DS_*
 config/deploy/*
+db/sphinx/*
+db/production_data*
+db/db/*
