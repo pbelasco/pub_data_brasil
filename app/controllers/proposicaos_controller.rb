@@ -2,10 +2,12 @@ class ProposicaosController < ApplicationController
   # GET /proposicaos
   # GET /proposicaos.xml
   def index
-    order = "id DESC" || params[:order]
-    sort  = "DESC" || params[:sort]
+   
     @num_proposicaos = Proposicao.count(:all)
-    @proposicaos = Proposicao.find(:all, :order => "'#{order} #{sort}'", :include => :andamentos, :page => {:size => 10, :current => params[:page], :first => 1})
+    # @posts = Post.paginate :page => params[:page], :per_page => 50
+    # @posts = Post.paginate_by_board_id @board.id, :page => params[:page], :order => 'updated_at DESC'
+      @proposicaos = Proposicao.paginate(:page => params[:page], :per_page => 10, :order => 'apresentacao DESC', :include => :andamentos)
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @proposicaos }
@@ -16,10 +18,8 @@ class ProposicaosController < ApplicationController
 
   def search
     unless params[:q].blank?
-      # params[:q] = sanitize(params[:q])
-      params[:p] = 1 unless params[:p]
-      # @proposicaos = Proposicao.paginating_ferret_search({:q => "#{params[:q]}~0.4", :page_size => 10, :current => params[:p]})
-      @proposicaos = Proposicao.paginating_ferret_search({:q => "#{params[:q]}~0.4", :page_size => 10, :current => params[:p]})
+      params[:page] = 1 unless params[:page]
+      @proposicaos = Proposicao.search("#{params[:q]}", :page => params[:page], :per_page => 10)
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @proposicaos }
@@ -36,10 +36,10 @@ class ProposicaosController < ApplicationController
   # GET /proposicaos/1.xml
   def show
     # @proposicao = Proposicao.find(params[:id])
-    @proposicao = Proposicao.find_by_id_sileg(params[:id], :include => :andamentos, :include => :tags)
+    @proposicao = Proposicao.find_by_id_sileg(params[:id], :include => :andamentos)
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @proposicao }
+      format.xml  { render :xml => [@proposicao] }
       format.json { render :json => @proposicao.to_json }
       format.yaml { render :inline => @proposicao.to_yaml }
       

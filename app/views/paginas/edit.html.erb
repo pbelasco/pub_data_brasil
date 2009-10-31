@@ -1,4 +1,4 @@
-<h1>Editing pagina</h1>
+<h1>Editar página</h1>
 
 <% form_for(@pagina) do |f| %>
   <%= f.error_messages %>
@@ -16,9 +16,9 @@
     <%= f.text_area :conteudo %>
   </p>
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit 'Atualizar' %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @pagina %> |
-<%= link_to 'Back', paginas_path %>
+<%= link_to 'Exibir', @pagina %> |
+<%= link_to 'Voltar para listagem', paginas_path %>

@@ -1,4 +1,4 @@
-<h1>New pagina</h1>
+<h1>Nova página</h1>
 
 <% form_for(@pagina) do |f| %>
   <%= f.error_messages %>
@@ -16,8 +16,8 @@
     <%= f.text_area :conteudo %>
   </p>
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit 'Criar' %>
   </p>
 <% end %>
 
-<%= link_to 'Back', paginas_path %>
+<%= link_to 'Voltar para listagem', paginas_path %>

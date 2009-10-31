@@ -3,8 +3,8 @@
 <table>
   <tr>
     <th>Titulo</th>
-    <th>Secao</th>
-    <th>Conteudo</th>
+    <th>Secão</th>
+    <th>Conteúdo</th>
   </tr>
 
 <% @paginas.each do |pagina| %>
@@ -12,13 +12,13 @@
     <td><%=h pagina.titulo %></td>
     <td><%=h pagina.secao %></td>
     <td><%=h pagina.conteudo %></td>
-    <td><%= link_to 'Show', pagina %></td>
-    <td><%= link_to 'Edit', edit_pagina_path(pagina) %></td>
-    <td><%= link_to 'Destroy', pagina, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Exibir', pagina %></td>
+    <td><%= link_to 'Editar', edit_pagina_path(pagina) %></td>
+    <td><%= link_to 'Apagar', pagina, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New pagina', new_pagina_path %>
+<%= link_to 'Nova pagina', new_pagina_path %>

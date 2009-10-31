@@ -1,8 +1,11 @@
 <div class="proposicao" id="<%= proposicao.id_sileg %>">
-	<%= "Relevância: #{(proposicao.ferret_score*100).round}" + "%" unless proposicao.ferret_score.nil? %> 
 	<div id="id_sileg" class="atributo">
-		<span class="meta">Descrição:</span> 
-		<%=h proposicao.descricao %> 
+		<span class="meta">Código:</span> 
+		<%= proposicao.descricao %>
+	</div>
+	<div id="media_link" class="atributo">
+		<span class="meta">Media link:</span>
+		<%= link_to "Íntegra do documento", proposicao.media_link.split(" ").last unless proposicao.media_link.nil? %>
 	</div>
 	<div id="id_sileg" class="atributo">
 		<span class="meta">Código da proposição:</span> 
@@ -32,29 +35,43 @@
 		<span class="meta">Explicação da Ementa:</span>
 		<%=h proposicao.explicacao %>
 	</div>	
-	<div id="media_link" class="atributo">
-		<span class="meta">Media link:</span>
-		<%=h proposicao.media_link %>
-	</div>
 	<div id="apreciacao" class="atributo">
 		<span class="meta">Apreciação:</span>
-		<%=h proposicao.apreciacao %>
+		<%= proposicao.apreciacao %>
 	</div>
 	<div id="tramitacao" class="atributo">
 		<span class="meta">Regime de Tramitacao:</span>
-		<%=h proposicao.tramitacao %>
+		<%= proposicao.tramitacao %>
 	</div>
 	<div id="despacho" class="atributo">
 		<span class="meta">Despacho:</span>
-		<%=h proposicao.despacho %>
+		<%= proposicao.despacho %>
 	</div>
 	<%= 
-		link_to_function "Mostrar andamentos" do |page|
-			page.visual_effect(:toggle_blind, "andamentos-#{proposicao.id_sileg}")
+		link_to_function "Ocultar Tags" do |page|
+			page.visual_effect :toggle_blind, "tags-#{proposicao.id_sileg}"
+		end 
+	%>
+	<div id="<%= "tags-#{proposicao.id_sileg}" %>" class="associacao">
+		<h4 class="meta">Tags:</h4>
+		<% proposicao.tags.each do |tag| %>
+		<div class="tag">
+			<div id="termo" class="atributo">
+				<span class="meta"></span>
+				<%= tag.termo %>
+			</div>
+		</div>
+		<% end -%>
+	</div>
+	
+	
+	<%= 
+		link_to_function "Ocultar andamentos" do |page|
+			page.visual_effect :toggle_blind, "andamentos-#{proposicao.id_sileg}"
 		end 
 	%>
 	<div id="<%= "andamentos-#{proposicao.id_sileg}" %>" class="associacao">
-		<span class="meta">Andamentos:</span>
+		<h4 class="meta">Andamentos:</h4>
 		<% proposicao.andamentos.each do |andamento| %>
 		<div class="andamento">
 			<div id="descricao" class="atributo">
@@ -70,15 +87,21 @@
 				<%= andamento.data %>
 			</div>
 		</div>
-<% end -%>
+		<% end -%>
 	</div>
+	
+	
 	<div class="nav_container">
 		<span class="nav"> <%= link_to 'Detalhes', proposicao_path(proposicao.id_sileg) %></span> | 
 		<span class="nav"> <%= link_to 'XML', proposicao_path( proposicao.id_sileg, :format => :xml) %></span> | 
-		<span class="nav"> <%= link_to 'Json', proposicao_path( proposicao.id_sileg, :format => :xml) %></span> | 
-		<span class="nav"> <%= link_to 'YAML', proposicao_path( proposicao.id_sileg, :format => :xml) %></span> | 
+		<span class="nav"> <%= link_to 'Json', proposicao_path( proposicao.id_sileg, :format => :json) %></span> | 
+		<span class="nav"> <%= link_to 'YAML', proposicao_path( proposicao.id_sileg, :format => :yaml) %></span> | 
 		<span class="nav">
-			<%= link_to "Consultar na página da câmara", "http://www.camara.gov.br/sileg/"+ proposicao.link %> 
+			<%= link_to "Consultar na página da câmara", "http://www.camara.gov.br/sileg/Prop_Detalhe.asp?id="+ proposicao.id_sileg.to_s %> 
 		</span> 
 	</div>
+	<hr noshade="noshade" height="1px">
+	<small>Criada em <%= proposicao.created_at %>, ultimo update: <%= proposicao.updated_at %>
+	Elegível para update: <%= proposicao.ellegible_for_update ? "sim" : "não" %>
+	</small>
 </div>

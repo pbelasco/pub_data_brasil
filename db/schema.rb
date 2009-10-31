@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091027204626) do
+ActiveRecord::Schema.define(:version => 20091030132659) do
 
   create_table "andamentos", :force => true do |t|
     t.integer  "proposicao_id"
@@ -39,6 +39,26 @@ ActiveRecord::Schema.define(:version => 20091027204626) do
     t.datetime "updated_at"
   end
 
+  create_table "bdrb_job_queues", :force => true do |t|
+    t.text     "args"
+    t.string   "worker_name"
+    t.string   "worker_method"
+    t.string   "job_key"
+    t.integer  "taken"
+    t.integer  "finished"
+    t.integer  "timeout"
+    t.integer  "priority"
+    t.datetime "submitted_at"
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.datetime "archived_at"
+    t.string   "tag"
+    t.string   "submitter_info"
+    t.string   "runner_info"
+    t.string   "worker_key"
+    t.datetime "scheduled_at"
+  end
+
   create_table "paginas", :force => true do |t|
     t.string   "titulo"
     t.string   "secao"
@@ -63,6 +83,8 @@ ActiveRecord::Schema.define(:version => 20091027204626) do
     t.text     "explicacao"
     t.text     "apreciacao"
     t.text     "tramitacao"
+    t.string   "acessoria_de"
+    t.string   "autor_link"
   end
 
   create_table "sessions", :force => true do |t|
