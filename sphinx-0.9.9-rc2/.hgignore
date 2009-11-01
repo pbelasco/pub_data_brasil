@@ -1,6 +1,0 @@
-glob:.svn/
-glob:bin/
-glob:*.user
-glob:junk/
-glob:*.suo
-glob:*.ncb
