@@ -1,18 +1,30 @@
+<% content_for :menu do %>
+	<ul class="menu">
+		<li>
+			<%= link_to 'Nova pagina', new_pagina_path %>
+		</li>
+		<li>
+			<%= link_to 'Todas as Páginas', paginas_path %>
+		</li>
+	</ul>
+	<h3>Seções</h3>
+	<ul class="menu">
+	<% @secoes.each do |s| %>
+		<li><%= s.secao %></li>
+	<% end %>
+	</ul>
+<% end -%>
+
+<% content_for :content do %>
 <p>
-  <b>Titulo:</b>
-  <%=h @pagina.titulo %>
+  <h1> <%=h @pagina.titulo %> <br />
+	<small>
+		 <%=h @pagina.secao %>
+	</small> 
+	</h1>
 </p>
+  <%= RedCloth.new(@pagina.conteudo).to_html %>
+  <%= link_to 'Editar', edit_pagina_path(@pagina) %>
 
-<p>
-  <b>Secao:</b>
-  <%=h @pagina.secao %>
-</p>
+<% end -%>
 
-<p>
-  <b>Conteudo:</b>
-  <%=h @pagina.conteudo %>
-</p>
-
-
-<%= link_to 'Edit', edit_pagina_path(@pagina) %> |
-<%= link_to 'Back', paginas_path %>

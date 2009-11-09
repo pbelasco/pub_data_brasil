@@ -1,5 +1,8 @@
-<h1>Detalhes da Proposição Legislativa: <%=h @proposicao.descricao %></h1>
 <%= render :partial => 'search_form' %>
 
-	<%= render :partial => 'proposicao', :proposicao => @proposicao %>
-
+	<%= render :partial => 'proposicao', :locals => {:proposicao => @proposicao} %>
+	<% content_for :menu do %>
+		<ul class="menu">
+			<li>Proposições</li>
+		</ul>
+	<% end %>

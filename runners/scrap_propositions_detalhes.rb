@@ -202,7 +202,6 @@ unless parsed_input.empty?
   parsed_input.each do |id|
     url = make_url(id)
     parsed_page = get_parsed_page(url)
-
     proposta = create_or_update_prop(id, parse_prop_detalhes(parsed_page))
     create_or_update_tags(proposta, parse_tags(parsed_page))
     andamentos = parse_and_create_andamentos(proposta, get_the_andamento_rows(parsed_page))

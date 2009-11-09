@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt_BR" lang="pt_BR">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+	<title>Legisdados dados:gov:br</title>
+	<link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css" />
+	<%= stylesheet_link_tag "style" %>
+	<%= javascript_include_tag :defaults %>
+</head>
+<body>
+	<div id="doc" class="yui-t7">
+		<div id="hd">
+			<img src="/images/votaio_br_main.jpg" alt="LegisDados - dados legislativos do Brasil">
+		</div>
+		<div id="bd">
+			<div class="user_nav">
+				<%= link_to "Registrar-se", new_user_path %>
+			</div>
+			<div class="flash"><%= flash[:notice] unless flash.empty? %></div>
+			<div class="yui-gd">
+				<div class="yui-u first">
+					<ul class="menu">
+						<%= yield :menu %>
+					</ul>
+				</div>
+				<div class="yui-u">
+					<div id="content">
+						<%= yield :content %>
+						<%= yield %>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div id="ft" role="contentinfo"><p>Votaio - open data.gov.br. Versão 001 Beta. No rights reserved</p></div>
+	</div>
+</body>
+</html>

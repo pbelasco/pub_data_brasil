@@ -6,7 +6,7 @@ RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 require 'json'
-
+require 'solr_pagination'
 
 Rails::Initializer.run do |config|  
   # Settings in config/environments/* take precedence over those specified here.
@@ -17,18 +17,16 @@ Rails::Initializer.run do |config|
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
   # Specify gems that this application depends on and have them installed with rake gems:install
-  config.gem "bj"
+  # config.gem "bj", :version => "1.0.1"
   
   config.gem "hpricot", :version => '0.8.1'
   config.gem "curb", :version => '0.5.4.0'
   config.gem "capistrano", :version => '2.5.8'
   config.gem "capistrano-ext",  :version => '1.2.1' , :lib => "capistrano"
   config.gem "mysql", :version => "2.7"
-  config.gem 'thinking-sphinx-099', :lib => 'thinking_sphinx', :version => '1.2.12', :source => "http://gemcutter.org"
-  # config.gem 'chronic', :version => '0.2.3'
-  config.gem 'json_pure', :lib => 'json', :version => '1.1.9'
-  # config.gem 'rubyforge', :version => '2.0.3'
-  # config.gem 'packet', :version => '0.1.15'
+  config.gem 'RedCloth', :version => '4.2.2'
+  config.gem 'authlogic', :version => "2.1.2"
+
   
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
@@ -49,3 +47,4 @@ Rails::Initializer.run do |config|
   config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   config.i18n.default_locale = :ptbr
 end
+

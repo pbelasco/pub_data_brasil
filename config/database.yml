@@ -7,3 +7,11 @@ development:
   password: ''
   pool: 10
   timeout: 5000
+test:
+  adapter: mysql
+  database: pdata_test
+  username: root
+  password: ''
+  pool: 10
+  timeout: 5000
+

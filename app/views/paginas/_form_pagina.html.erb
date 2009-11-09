@@ -1,0 +1,19 @@
+<% form_for(pagina) do |f| %>
+<%= f.error_messages %>
+<p>
+	<%= f.label :titulo %><br />
+	<%= f.text_field :titulo %>
+</p>
+<p>
+	<%= f.label :secao %><br />
+	<%= f.text_field :secao %>
+</p>
+<p>
+	<%= f.label :conteudo %><br />
+	<%= f.textile_editor :conteudo, :size => "70x20" %>
+</p>
+<p>
+	<%= f.submit 'Criar' %>
+</p>
+<%= textile_editor_initialize -%>
+<% end %>

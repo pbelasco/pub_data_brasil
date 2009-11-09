@@ -1,3 +1,5 @@
+<h1>Detalhes da Proposição Legislativa: <%=h proposicao.descricao %></h1>
+
 <div class="proposicao" id="<%= proposicao.id_sileg %>">
 	<div id="id_sileg" class="atributo">
 		<span class="meta">Código:</span> 
@@ -37,7 +39,7 @@
 	</div>	
 	<div id="apreciacao" class="atributo">
 		<span class="meta">Apreciação:</span>
-		<%= proposicao.apreciacao %>
+		<%=h proposicao.apreciacao %>
 	</div>
 	<div id="tramitacao" class="atributo">
 		<span class="meta">Regime de Tramitacao:</span>
@@ -45,7 +47,7 @@
 	</div>
 	<div id="despacho" class="atributo">
 		<span class="meta">Despacho:</span>
-		<%= proposicao.despacho %>
+		<%=h proposicao.despacho %>
 	</div>
 	<%= 
 		link_to_function "Ocultar Tags" do |page|
@@ -63,8 +65,6 @@
 		</div>
 		<% end -%>
 	</div>
-	
-	
 	<%= 
 		link_to_function "Ocultar andamentos" do |page|
 			page.visual_effect :toggle_blind, "andamentos-#{proposicao.id_sileg}"
@@ -90,7 +90,6 @@
 		<% end -%>
 	</div>
 	
-	
 	<div class="nav_container">
 		<span class="nav"> <%= link_to 'Detalhes', proposicao_path(proposicao.id_sileg) %></span> | 
 		<span class="nav"> <%= link_to 'XML', proposicao_path( proposicao.id_sileg, :format => :xml) %></span> | 
@@ -100,8 +99,7 @@
 			<%= link_to "Consultar na página da câmara", "http://www.camara.gov.br/sileg/Prop_Detalhe.asp?id="+ proposicao.id_sileg.to_s %> 
 		</span> 
 	</div>
-	<hr noshade="noshade" height="1px">
-	<small>Criada em <%= proposicao.created_at %>, ultimo update: <%= proposicao.updated_at %>
-	Elegível para update: <%= proposicao.ellegible_for_update ? "sim" : "não" %>
-	</small>
 </div>
+<small>Criada em <%= proposicao.created_at %>, ultimo update: <%= proposicao.updated_at %>
+Elegível para update: <%= proposicao.ellegible_for_update ? "sim" : "não" %>
+</small>

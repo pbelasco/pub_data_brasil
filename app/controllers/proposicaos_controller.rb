@@ -19,7 +19,9 @@ class ProposicaosController < ApplicationController
   def search
     unless params[:q].blank?
       params[:page] = 1 unless params[:page]
-      @proposicaos = Proposicao.search("#{params[:q]}", :page => params[:page], :per_page => 10)
+      
+      count = Proposicao.count_by_solr(params[:q])
+      @proposicaos = Proposicao.paginate_all_by_solr("#{params[:q]}~", :page => params[:page], :total_entries => count)
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @proposicaos }
@@ -27,7 +29,7 @@ class ProposicaosController < ApplicationController
         format.yaml { render :inline =>  [@proposicao.to_yaml, @proposicaos.map {|p| p.to_yaml}] }
       end
     else
-      flash[:warning] = "Por favor informe uma chave de pesquisa"
+      flash[:notice] = "Por favor informe uma chave de pesquisa"
       redirect_to proposicaos_path
     end
   end
@@ -37,6 +39,10 @@ class ProposicaosController < ApplicationController
   def show
     # @proposicao = Proposicao.find(params[:id])
     @proposicao = Proposicao.find_by_id_sileg(params[:id], :include => :andamentos)
+    if @proposicao.ellegible_for_update 
+        Bj.submit "./script/runner ./runners/scrap_propositions_detalhes.rb 'id=#{@proposicao.id_sileg}'", :log => 'log/bj'
+        flash[:notice] = "A proposição está sendo atualizada. aguarde..."
+    end
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => [@proposicao] }

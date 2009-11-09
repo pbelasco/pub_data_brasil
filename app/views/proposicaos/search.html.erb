@@ -5,6 +5,11 @@ Resultados de busca em proposições para <span class="highlight"><%= "'#{params
 <%= will_paginate @proposicaos %>
 <% @proposicaos.each do |proposicao| %>
 	<%= render :partial => 'proposicao', :collection => @proposicaos %>
-<% end %>
+<% end unless @proposicaos.empty? %>
 <%= will_paginate @proposicaos %>
-<%# link_to 'Nova proposicao', new_proposicao_path %>
+
+<% content_for :menu do %>
+	<ul class="menu">
+		<li>Proposições</li>
+	</ul>
+<% end %>

@@ -1,24 +1,25 @@
+<% content_for :menu do %>
+	<ul class="menu">
+		<li>
+			<%= link_to 'Nova pagina', new_pagina_path %>
+		</li>
+		<li>
+			<%= link_to 'Todas as Páginas', paginas_path %>
+		</li>
+	</ul>
+	<h3>Seções</h3>
+	<ul class="menu">
+	<% @secoes.each do |s| %>
+		<li><%= s.secao %></li>
+	<% end %>
+	</ul>
+<% end -%>
+
+<% content_for :content do %>
+
 <h1>Editar página</h1>
 
-<% form_for(@pagina) do |f| %>
-  <%= f.error_messages %>
+	<%= render :partial => "form_pagina", :locals => { :pagina => @pagina } %>
 
-  <p>
-    <%= f.label :titulo %><br />
-    <%= f.text_field :titulo %>
-  </p>
-  <p>
-    <%= f.label :secao %><br />
-    <%= f.text_field :secao %>
-  </p>
-  <p>
-    <%= f.label :conteudo %><br />
-    <%= f.text_area :conteudo %>
-  </p>
-  <p>
-    <%= f.submit 'Atualizar' %>
-  </p>
-<% end %>
+<% end -%>
 
-<%= link_to 'Exibir', @pagina %> |
-<%= link_to 'Voltar para listagem', paginas_path %>

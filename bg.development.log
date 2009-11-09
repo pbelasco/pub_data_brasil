@@ -1,0 +1,27 @@
+# Logfile created on Mon Nov 09 16:15:04 -0200 2009 by /
+I, [2009-11-09T16:15:04.658238 #4981]  INFO -- : cmd </System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby ./script/generate migration BjMigration0>
+I, [2009-11-09T16:15:15.930428 #4981]  INFO -- : status <0>
+I, [2009-11-09T16:15:15.931217 #4981]  INFO -- : generated <./db/migrate/20091109181515_bj_migration0.rb>
+I, [2009-11-09T16:15:15.931406 #4981]  INFO -- : cmd <rake RAILS_ENV=development db:migrate>
+I, [2009-11-09T16:15:30.007468 #4981]  INFO -- : status <1>
+F, [2009-11-09T16:15:30.066676 #4981] FATAL -- : "rake RAILS_ENV=development db:migrate" failed with #<Process::Status: pid=4985,exited(1)> (RuntimeError)
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/lib/bj/util.rb:28:in `spawn'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/lib/bj/api.rb:147:in `migrate'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/lib/bj/bj.rb:47:in `call'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/lib/bj/bj.rb:47:in `chroot'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/lib/bj/api.rb:146:in `migrate'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/lib/bj/api.rb:110:in `setup'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/lib/bj/bj.rb:54:in `call'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/lib/bj/bj.rb:54:in `chroot'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/lib/bj/bj.rb:52:in `chdir'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/lib/bj/bj.rb:52:in `chroot'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/lib/bj/api.rb:108:in `setup'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/bin/bj:349:in `run!'
+/Users/pbelasco/.gem/ruby/1.8/gems/main-4.0.0/lib/main/program/class_methods.rb:143:in `run'
+/Users/pbelasco/.gem/ruby/1.8/gems/main-4.0.0/lib/main/program/class_methods.rb:132:in `catch'
+/Users/pbelasco/.gem/ruby/1.8/gems/main-4.0.0/lib/main/program/class_methods.rb:132:in `run'
+/Users/pbelasco/.gem/ruby/1.8/gems/main-4.0.0/lib/main/factories.rb:18:in `run'
+/Users/pbelasco/.gem/ruby/1.8/gems/main-4.0.0/lib/main/factories.rb:25:in `Main'
+/Users/pbelasco/.gem/ruby/1.8/gems/bj-1.0.1/bin/bj:6
+/usr/bin/bj:19:in `load'
+/usr/bin/bj:19

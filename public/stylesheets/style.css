@@ -44,9 +44,23 @@ body {
 }
 .nav_container {
 	clear:both;
-	
 }
 
+.flash {
+	padding: .4em;
+	background: #484;
+	clear:both;
+	color: #fff;
+	font-weight: 600;
+	margin: .4em 0;
+}
+/* ========================== */
+/* = Autenticacao/navegação = */
+/* ========================== */
+.user_nav {
+	float: right;
+	clear: both;
+}
 /* ================================ */
 /* = Paginacao                    = */
 /* ================================ */

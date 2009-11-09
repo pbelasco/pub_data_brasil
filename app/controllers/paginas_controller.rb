@@ -3,6 +3,7 @@ class PaginasController < ApplicationController
   # GET /paginas.xml
   def index
     @paginas = Pagina.all
+    @secoes = Pagina.find(:all, :group => :secao)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,7 +15,7 @@ class PaginasController < ApplicationController
   # GET /paginas/1.xml
   def show
     @pagina = Pagina.find(params[:id])
-
+    @secoes = Pagina.find(:all, :group => :secao)
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @pagina }
@@ -25,6 +26,7 @@ class PaginasController < ApplicationController
   # GET /paginas/new.xml
   def new
     @pagina = Pagina.new
+    @secoes = Pagina.find(:all, :group => :secao)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -35,6 +37,7 @@ class PaginasController < ApplicationController
   # GET /paginas/1/edit
   def edit
     @pagina = Pagina.find(params[:id])
+    @secoes = Pagina.find(:all, :group => :secao)
   end
 
   # POST /paginas
