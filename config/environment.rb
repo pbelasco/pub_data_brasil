@@ -18,7 +18,7 @@ Rails::Initializer.run do |config|
 
   # Specify gems that this application depends on and have them installed with rake gems:install
   # config.gem "bj", :version => "1.0.1"
-  
+
   config.gem "hpricot", :version => '0.8.1'
   config.gem "curb", :version => '0.5.4.0'
   config.gem "capistrano", :version => '2.5.8'
@@ -26,7 +26,6 @@ Rails::Initializer.run do |config|
   config.gem "mysql", :version => "2.7"
   config.gem 'RedCloth', :version => '4.2.2'
   config.gem 'authlogic', :version => "2.1.2"
-
   
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
