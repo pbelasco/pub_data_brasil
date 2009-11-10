@@ -1,7 +1,6 @@
 <h1><%= "#{@total_hits}" %> 
-Resultados de busca em proposições para <span class="highlight"><%= "'#{params[:q]}'" %></span>
+Resultados para <span class="highlight"><%= "'#{params[:q]}'" %></span>
 	</h1>
-<%= render :partial => 'search_form' %>
 <%= will_paginate @proposicaos %>
 <% @proposicaos.each do |proposicao| %>
 	<%= render :partial => 'proposicao', :collection => @proposicaos %>

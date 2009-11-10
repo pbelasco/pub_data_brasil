@@ -1,6 +1,4 @@
-	
-	<% form_tag search_proposicaos_path, :action => :search, :method => :get do  -%>
-		<%= text_field_tag :q, params[:q] || "Digite sua chave de pesquisa",  { :size => 60, :onclick => "this.value=''"}%>
-		<%= submit_tag "Busca" %>
-	<% end -%>
-	
+<% form_tag search_proposicaos_path, :action => :search, :method => :get do  -%>
+<%= text_field_tag :q, params[:q] || "Pesquisa",  { :size => 60, :onclick => "this.value='#{params[:q] || ''}'"}%>
+<%= submit_tag "Busca" %>
+<% end -%>

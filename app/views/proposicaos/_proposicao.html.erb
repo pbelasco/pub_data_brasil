@@ -1,53 +1,58 @@
-<h1>Detalhes da Proposição Legislativa: <%=h proposicao.descricao %></h1>
+<h1><%=h proposicao.descricao %></h1>
+<small class="meta">
+	<p>Criada em <%= proposicao.created_at %></p>
+	<p>Último update <%= proposicao.updated_at %></p>
+	<p>Elegível para update <%= proposicao.ellegible_for_update ? "sim" : "não" %></p>
+</small>
 
 <div class="proposicao" id="<%= proposicao.id_sileg %>">
 	<div id="id_sileg" class="atributo">
-		<span class="meta">Código:</span> 
+		<div class="meta">Código</div> 
 		<%= proposicao.descricao %>
 	</div>
 	<div id="media_link" class="atributo">
-		<span class="meta">Media link:</span>
+		<div class="meta">Media link</div>
 		<%= link_to "Íntegra do documento", proposicao.media_link.split(" ").last unless proposicao.media_link.nil? %>
 	</div>
 	<div id="id_sileg" class="atributo">
-		<span class="meta">Código da proposição:</span> 
+		<div class="meta">Código da proposição</div> 
 		<%=h proposicao.id_sileg %> 
 	</div>
 	<div id="orgao" class="atributo">
-		<span class="meta">Órgão:</span> 
+		<div class="meta">Órgão</div> 
 		<%=h proposicao.orgao %>
 	</div>
 	<div id="situacao" class="atributo">
-		<span class="meta">Situação:</span> 
+		<div class="meta">Situação</div> 
 		<%=h proposicao.situacao %>
 	</div>
 	<div id="autor" class="atributo">
-		<span class="meta">Autor:</span>
+		<div class="meta">Autor</div>
 		<%=h proposicao.autor %>
 	</div>
 	<div id="apresentacao" class="atributo">
-		<span class="meta">Data da Apresentação:</span>
+		<div class="meta">Data da Apresentação</div>
 		<%=h proposicao.apresentacao %>
 	</div>
 	<div id="ementa" class="atributo">
-		<span class="meta">Ementa:</span>
+		<div class="meta">Ementa</div>
 		<%=h proposicao.ementa %>
 	</div>
 	<div id="explicacao" class="atributo">
-		<span class="meta">Explicação da Ementa:</span>
+		<div class="meta">Explicação da Ementa</div>
 		<%=h proposicao.explicacao %>
 	</div>	
 	<div id="apreciacao" class="atributo">
-		<span class="meta">Apreciação:</span>
+		<div class="meta">Apreciação</div>
 		<%=h proposicao.apreciacao %>
 	</div>
 	<div id="tramitacao" class="atributo">
-		<span class="meta">Regime de Tramitacao:</span>
-		<%= proposicao.tramitacao %>
+		<div class="meta">Regime de Tramitacao</div>
+		<%=h proposicao.tramitacao %>
 	</div>
 	<div id="despacho" class="atributo">
-		<span class="meta">Despacho:</span>
-		<%=h proposicao.despacho %>
+		<div class="meta">Despacho</div>
+		<%= proposicao.despacho %>
 	</div>
 	<%= 
 		link_to_function "Ocultar Tags" do |page|
@@ -55,11 +60,11 @@
 		end 
 	%>
 	<div id="<%= "tags-#{proposicao.id_sileg}" %>" class="associacao">
-		<h4 class="meta">Tags:</h4>
+		<h4 class="meta">Tags</h4>
 		<% proposicao.tags.each do |tag| %>
 		<div class="tag">
 			<div id="termo" class="atributo">
-				<span class="meta"></span>
+				<div class="meta"></div>
 				<%= tag.termo %>
 			</div>
 		</div>
@@ -71,19 +76,19 @@
 		end 
 	%>
 	<div id="<%= "andamentos-#{proposicao.id_sileg}" %>" class="associacao">
-		<h4 class="meta">Andamentos:</h4>
-		<% proposicao.andamentos.each do |andamento| %>
+		<h4 class="meta">(<%= proposicao.andamentos.count(:id) %>) Andamentos</h4>
+		<% proposicao.andamentos.find(:all, :order => "data DESC").each do |andamento| %>
 		<div class="andamento">
 			<div id="descricao" class="atributo">
-				<span class="meta">Descricao:</span>
+				<div class="meta">Descricao</div>
 				<%= andamento.descricao %>
 			</div>
 			<div id="local" class="atributo">
-				<span class="meta">Local:</span>
+				<div class="meta">Local</div>
 				<%= andamento.local %>
 			</div>
 			<div id="data" class="atributo">
-				<span class="meta">Data:</span>
+				<div class="meta">Data</div>
 				<%= andamento.data %>
 			</div>
 		</div>
@@ -100,6 +105,3 @@
 		</span> 
 	</div>
 </div>
-<small>Criada em <%= proposicao.created_at %>, ultimo update: <%= proposicao.updated_at %>
-Elegível para update: <%= proposicao.ellegible_for_update ? "sim" : "não" %>
-</small>

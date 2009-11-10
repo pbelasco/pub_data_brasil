@@ -2,7 +2,6 @@
 	Listagem de proposições
 	<small>(<%= @num_proposicaos %> no estoque)</small>
 </h1>
-<%= render :partial => 'search_form' %>
 
 <%= will_paginate @proposicaos %>
 <%= render :partial => 'proposicao', :collection => @proposicaos %>

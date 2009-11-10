@@ -18,6 +18,7 @@
 			<div class="user_nav">
 				<%= link_to "Registrar-se", new_user_path %>
 			</div>
+			<%= render :partial => 'search_form' %>
 			<div class="flash"><%= flash[:notice] unless flash.empty? %></div>
 			<div class="yui-gd">
 				<div class="yui-u first">
@@ -34,7 +35,7 @@
 			</div>
 
 		</div>
-		<div id="ft" role="contentinfo"><p>Votaio - open data.gov.br. Versão 001 Beta. No rights reserved</p></div>
+		<div id="ft" class="footer_container"><small>LegisDados. v 0.0.1b.</small></div>
 	</div>
 </body>
 </html>

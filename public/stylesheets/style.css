@@ -2,7 +2,7 @@ h1 { font-size: 1.93em; }
 h2 { font-size: 1.72em; }
 h3 { font-size: 1.61em; }
 h4 { font-size: 1.44em; }
-h1, h2, h3, h4 { line-height: 1.9em; }
+h1, h2, h3, h4 { line-height: 1.2em; }
 p {margin: 1em 0;} 
 ul, ol { margin-left:2em; }
 ul li {list-style-type: circle;}
@@ -32,7 +32,6 @@ body {
 }
 .proposicao, .andamento {
 	border-bottom: 1px #666 solid;
-	background: #dff;
 	padding:.5em;
 	margin:.5em;
 }

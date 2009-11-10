@@ -21,7 +21,7 @@ class ProposicaosController < ApplicationController
       params[:page] = 1 unless params[:page]
       
       count = Proposicao.count_by_solr(params[:q])
-      @proposicaos = Proposicao.paginate_all_by_solr("#{params[:q]}~", :page => params[:page], :total_entries => count)
+      @proposicaos = Proposicao.paginate_all_by_solr("#{params[:q]}~0.6", :page => params[:page], :total_entries => count)
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @proposicaos }
@@ -40,8 +40,8 @@ class ProposicaosController < ApplicationController
     # @proposicao = Proposicao.find(params[:id])
     @proposicao = Proposicao.find_by_id_sileg(params[:id], :include => :andamentos)
     if @proposicao.ellegible_for_update 
-        Bj.submit "./script/runner ./runners/scrap_propositions_detalhes.rb 'id=#{@proposicao.id_sileg}'", :log => 'log/bj'
-        flash[:notice] = "A proposição está sendo atualizada. aguarde..."
+     # Bj.submit "./script/runner ./runners/scrap_propositions_detalhes.rb 'id=#{@proposicao.id_sileg}'", :log => 'log/bj'
+        flash[:notice] = "A proposição poderia estar sendo atualizada. Aguarde..."
     end
     respond_to do |format|
       format.html # show.html.erb
