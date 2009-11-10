@@ -19,7 +19,7 @@ class UserSessionsController < ApplicationController
 
     respond_to do |format|
       if @user_session.save
-        flash[:notice] = 'UserSession was successfully created.'
+        flash[:notice] = 'Login aceito.'
         format.html { redirect_to(root_path) }
         format.xml  { render :xml => @user_session, :status => :created, :location => @user_session }
       else

@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:notice] = 'Sua conta foi criada.'
-        format.html { redirect_to(@user) }
+        format.html { redirect_to(root_path) }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }

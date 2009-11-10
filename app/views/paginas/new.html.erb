@@ -1,24 +1,10 @@
 <% content_for :menu do %>
-	<ul class="menu">
-		<li>
-			<%= link_to 'Nova pagina', new_pagina_path %>
-		</li>
-		<li>
-			<%= link_to 'Voltar para listagem', paginas_path %>
-		</li>
-	</ul>
-	<h3>Seções</h3>
-	<ul class="menu">
-	<% @secoes.each do |s| %>
-		<li><%= s.secao %></li>
-	<% end %>
-	</ul>
+	<%= render :partial => 'menu', :locals => { :secoes => @secoes } %>
 <% end -%>
+
 <% content_for :content do %>
 
 <h1>Nova página</h1>
-
 <%= render :partial => "form_pagina", :locals => { :pagina => @pagina } %>
-
 <%= link_to 'Voltar para listagem', paginas_path %>
 <% end %>

@@ -1,0 +1,13 @@
+
+	<h3>Seções</h3>
+	<ul class="menu">
+	<% secoes.each do |s| %>
+		<h3><%= s.secao %></h3>
+		<% Pagina.find(:all, :conditions => {:secao => s.secao}).each do |pag| %>
+		<li><%= link_to pag.titulo, pagina_path(pag) %></li>
+		<% end %>
+	<% end %>
+	</ul>
+	<% if current_user %>
+		<%= link_to 'Nova pagina', new_pagina_path %>
+	<% end %>

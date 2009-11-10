@@ -25,10 +25,26 @@ body {
 	border-bottom: 1px solid #666;
 	padding: .5em 0 0 0;
 }
+#bd {}
+#top_panel {
+	margin: .4em 0;
+}
+.menu ul {
+	margin: 0;
+	padding:.3em;
+}
+.menu h3 {
+ font-size: 1.2em;
+	margin: .3em 0 ;
+}
 .menu li {
-	padding: .5em;
+	padding: .1em;
 	font-weight: 600;
 	border-bottom: 1px solid #666;
+	list-style-type: none;
+}
+.menu li a {
+	text-decoration: none;
 }
 .proposicao, .andamento {
 	border-bottom: 1px #666 solid;

@@ -1,31 +1,15 @@
 <% content_for :menu do %>
-	<ul class="menu">
-		<li>
-			<%= link_to 'Nova pagina', new_pagina_path %>
-		</li>
-		<li>
-			<%= link_to 'Voltar para listagem', paginas_path %>
-		</li>
-	</ul>
-	<h3>Seções</h3>
-	<ul class="menu">
-	<% @secoes.each do |s| %>
-		<li><%= s.secao %></li>
-	<% end %>
-	</ul>
+	<%= render :partial => 'menu', :locals => { :secoes => @secoes } %>
 <% end -%>
 <% content_for :content do %>
 
 <% @paginas.each do |pagina| %>
 <div class="promo">
     <h3><%=h pagina.titulo %></h3>
-    <small><%=h pagina.secao %></small>
-    <li><%= RedCloth.new(pagina.conteudo[0..140] + ". . ." ).to_html %></li>
-	
-    <li><%= link_to 'Exibir', pagina %></li>
-    <li><%= link_to 'Editar', edit_pagina_path(pagina) %></li>
-    <li><%= link_to 'Apagar', pagina, :confirm => 'Tem Certeza?', :method => :delete %></li>
-
+    <%= RedCloth.new(pagina.conteudo[0..140] + ". . ." ).to_html %>
+	<% if current_user %>
+    	<%= link_to 'Editar', edit_pagina_path(pagina) %>
+	<% end %>
  </div>
 <% end %>
 

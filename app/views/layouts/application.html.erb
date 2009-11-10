@@ -15,11 +15,22 @@
 			<img src="/images/votaio_br_main.jpg" alt="LegisDados - dados legislativos do Brasil">
 		</div>
 		<div id="bd">
-			<div class="user_nav">
-				<%= link_to "Registrar-se", new_user_path %>
+
+			<div id="top_panel">
+				<div class="user_nav">
+					<% if current_user %>
+					<%= current_user.name %> | 
+					<%= link_to "Sair", user_path(current_user, :method => :delete, :confirm => "sair?") %>
+					<% else %>
+					<%= link_to "Registrar-se", new_user_path %> | 
+					<%= link_to "Entrar", new_user_session_path %>
+					<% end %>
+				</div>
+				<%= render :partial => 'shared/search_form' %>
 			</div>
-			<%= render :partial => 'search_form' %>
-			<div class="flash"><%= flash[:notice] unless flash.empty? %></div>
+
+			
+			<%= "<div class=\"flash\">" + flash[:notice] + "</div>" unless flash.empty? %>
 			<div class="yui-gd">
 				<div class="yui-u first">
 					<ul class="menu">

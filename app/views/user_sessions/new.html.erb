@@ -1,19 +1,19 @@
-<h1>New user_session</h1>
+<h1>Login</h1>
 
 <% form_for(@user_session) do |f| %>
   <%= f.error_messages %>
 
   <p>
-    <%= f.label :user_name %><br />
-    <%= f.text_field :user_name %>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
   </p>
   <p>
-    <%= f.label :password %><br />
+    <%= f.label :password, "Senha" %><br />
     <%= f.password_field :password %>
   </p>
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit 'Login' %>
   </p>
 <% end %>
 
-<%= link_to 'Back', user_sessions_path %>
+<%= link_to 'Criar uma conta', new_user_path %>
