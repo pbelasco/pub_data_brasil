@@ -118,9 +118,13 @@ def parse_elements_and_create(rows)
 
       puts "#{h.inspect}\n-------------------------------÷---------------------------------------------" unless row.empty?
       props << h
-      # puts "criando prop #{h.inspect}"
-      # Proposicao.create(h)
-      Proposicao.create_or_update_by(:id_sileg, h)
+      
+      if nova_proposicao = Proposicao.find_by_id_sileg(h[:id_sileg]) 
+        nova_proposicao.update_attributes(h)
+      else 
+        nova_proposicao = Proposicao.create(h)
+      end
+      nova_proposicao
     end 
   end 
   puts "criados/atualizados #{props.size} registros"

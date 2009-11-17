@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt_BR" lang="pt_BR">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> 
+	<title>Legisdados dados:gov:br</title>
+	<link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css" />
+	<%= stylesheet_link_tag "style" %>
+	<%= javascript_include_tag :defaults %>
+</head>
+<body>
+	<div id="doc" class="yui-t7">
+		<div id="hd">
+			<img src="/images/votaio_br_main.jpg" alt="LegisDados - dados legislativos do Brasil">
+		</div>
+		<div id="bd">
+
+			<div id="top_panel">
+				<div class="user_nav">
+					<% if current_user %>
+					<%= current_user.name %> | 
+					<%= link_to "Sair", user_path(current_user, :method => :delete, :confirm => "sair?") %>
+					<% else %>
+					<%= link_to "Registrar-se", new_user_path %> | 
+					<%= link_to "Entrar", new_user_session_path %>
+					<% end %>
+				</div>
+				<%= render :partial => 'shared/search_form' %>
+			</div>
+
+			
+			<%= "<div class=\"flash\">" + flash[:notice] + "</div>" unless flash.empty? %>
+			<div class="yui-gd">
+				<!-- <div class="yui-u first">
+					<ul class="menu">
+						<%= yield :menu %>
+					</ul>
+				</div> -->
+					<%= yield :content %>
+					<%= yield %>
+			</div>
+
+		</div>
+		<div id="ft" class="footer_container"><small>LegisDados. v 0.0.1b.</small></div>
+	</div>
+</body>
+</html>
