@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091109202426) do
+ActiveRecord::Schema.define(:version => 20091117192809) do
 
   create_table "andamentos", :force => true do |t|
     t.integer  "proposicao_id"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20091109202426) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "media_link"
-    t.string   "local"
+    t.text     "local"
     t.integer  "id_sileg"
   end
 
