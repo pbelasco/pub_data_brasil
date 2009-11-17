@@ -8,18 +8,21 @@
 </small>
 
 <div class="proposicao" id="<%= proposicao.id_sileg %>">
+	
 	<div class="campo">
 		<div class="meta">Código</div> 
 		<div id="id_sileg" class="atributo">
 			<%= proposicao.descricao %> [<%=h proposicao.id_sileg %>] <%= link_to "Íntegra do documento", proposicao.media_link.split(" ").last unless proposicao.media_link.nil? %>
 		</div>
 	</div>
+	
 	<div class="campo">
 		<div class="meta">Autor</div>
 		<div id="autor" class="atributo">
 			<%=h proposicao.autor %>
 		</div>
 	</div>
+	
 	<div class="campo">
 		<div class="meta">Data da Apresentação</div>
 		<div id="apresentacao" class="atributo">
