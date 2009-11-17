@@ -19,7 +19,10 @@ body {
 }
 #content {
 	border-left: 1px solid #666;
-	padding: 0 0 0 .5em;
+	padding: 0 0 0 .5em;*/
+}
+#content-1col {
+	width: 150%;
 }
 #hd {
 	border-bottom: 1px solid #666;
@@ -51,11 +54,19 @@ body {
 	padding:.5em;
 	margin:.5em;
 }
+.campo {
+	clear:both;
+	border-bottom:1px solid #ccc;
+}
 .associacao {
 	margin: 0 0 0 2em;
 }
 .meta {
-	font-weight: 600;
+	font-weight:600;
+	float: left;
+}
+.atributo {
+margin: 0 0 0 200px;
 }
 .nav_container {
 	clear:both;

@@ -111,6 +111,7 @@ def parse_prop_detalhes(doc)
       str = (doc/"/html/body/table//tr[2]/td//").html || ""
 
       spl = str.split(/[Explica][^o ]*o da Ementa: <\/b>/)[1]
+      
       unless spl.nil?
         h[:explicacao] =  spl.split("<b>")[0].strip || nil
       end
@@ -124,7 +125,7 @@ def parse_prop_detalhes(doc)
         h[:despacho]   =  spl.split("<b>")[0].strip || nil 
       end
       if spl = str.split(/[Acess][^r]*[ria de: <\/b>]/)[1]
-        h[:acessoria_de] = spl.split("<b>")[0].strip || nil 
+        h[:acessoria_de] = spl.to_s.split("<b>")[0] || nil 
       end
     end
     puts "#{h.inspect}\nDetalhes de Proposta ----------------------------------------" unless h.empty?
@@ -140,8 +141,8 @@ def parse_and_create_andamentos(proposta, rows)
       # link que contem o id e o cod/ano da proposicao
       h = Hash.new("Este andamento")  
       h[:local] = (row/"b").first.inner_html.to_s.strip.split("&nbsp;").join(" ").gsub(/(\r\n)|\t/, "") || nil
-      h[:descricao] = (row/"td")[1].html.split("<br />")[1].strip || nil
-      h[:data] = (row/"td")[0].inner_html.strip.split("/").reverse.join("-") || nil
+      h[:descricao] = (row/"td")[1].html.to_s.split("<br />")[1].strip || nil
+      h[:data] = (row/"td")[0].inner_html.to_s.strip.split("/").reverse.join("-") || nil
       h[:media_link] = (row/'a[@HREF]').to_s.map { |s| s.split("HREF=\"")[1].split("\" ")[0] || nil }
       h[:id_sileg] = @parsed_vars[0]
 

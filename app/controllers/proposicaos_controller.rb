@@ -1,6 +1,9 @@
 class ProposicaosController < ApplicationController
   # GET /proposicaos
   # GET /proposicaos.xml
+  
+  layout '1col'
+  
   def index
    
     @num_proposicaos = Proposicao.count(:all)
@@ -21,7 +24,7 @@ class ProposicaosController < ApplicationController
       params[:page] = 1 unless params[:page]
       
       count = Proposicao.count_by_solr(params[:q])
-      @proposicaos = Proposicao.paginate_all_by_solr("#{params[:q]}~0.6", :page => params[:page], :total_entries => count)
+      @proposicaos = Proposicao.paginate_all_by_solr("#{params[:q]}", :page => params[:page], :total_entries => count)
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @proposicaos }
