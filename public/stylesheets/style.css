@@ -57,6 +57,7 @@ body {
 .campo {
 	clear:both;
 	border-bottom:1px solid #ccc;
+	min-height: 1.3em;
 }
 .associacao {
 	margin: 0 0 0 2em;

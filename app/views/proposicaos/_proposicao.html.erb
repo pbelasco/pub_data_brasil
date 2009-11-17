@@ -11,7 +11,7 @@
 	<div class="campo">
 		<div class="meta">Código</div> 
 		<div id="id_sileg" class="atributo">
-			<%= proposicao.descricao %> | <%=h proposicao.id_sileg %>  | <%= link_to "Íntegra do documento", proposicao.media_link.split(" ").last unless proposicao.media_link.nil? %>
+			<%= proposicao.descricao %> [<%=h proposicao.id_sileg %>] <%= link_to "Íntegra do documento", proposicao.media_link.split(" ").last unless proposicao.media_link.nil? %>
 		</div>
 	</div>
 	<div class="campo">
@@ -30,7 +30,7 @@
 	<div class="campo">
 		<div class="meta">Apreciação</div>
 		<div id="apreciacao" class="atributo">
-			<%=h proposicao.apreciacao %>
+			<%=h Hpricot.parse(proposicao.apreciacao).inner_text unless proposicao.apreciacao.nil? %>
 		</div>
 	</div>
 
@@ -51,7 +51,7 @@
 	<div class="campo">
 		<div class="meta">Situação</div>
 		<div id="situacao" class="atributo">
-			<%=h proposicao.situacao %>
+			<%=h Hpricot.parse(proposicao.situacao).inner_text %>
 		</div>
 	</div>
 
@@ -65,14 +65,14 @@
 	<div class="campo">
 		<div class="meta">Explicação da Ementa</div>
 		<div id="explicacao" class="atributo">
-			<%=h proposicao.explicacao %>
+			<%=h proposicao.explicacao || " " %>
 		</div>
 	</div>
 
 	<div class="campo">
 		<div class="meta">Despacho</div>
 		<div id="despacho" class="atributo">
-			<%= proposicao.despacho %>
+			<%= Hpricot.parse(proposicao.despacho).inner_text %>
 		</div>
 	</div>
 
@@ -90,24 +90,26 @@
 		</div>
 	</div>
 
-	<div class="meta">(<%= proposicao.andamentos.count(:id) %>) Andamentos</div>
-	<div id="<%= "andamentos-#{proposicao.id_sileg}" %>" class="associacao">
-		<% proposicao.andamentos.find(:all, :order => "data DESC").each do |andamento| %>
-		<div class="andamento">
-			<div id="descricao" class="atributo">
+	<div class="campo">
+		<div class="meta">(<%= proposicao.andamentos.count(:id) %>) Andamentos</div>
+		<div id="<%= "andamentos-#{proposicao.id_sileg}" %>" class="associacao">		
+			<% proposicao.andamentos.find(:all, :order => "data DESC").each do |andamento| %>
+			<div class="andamento">
 				<div class="meta">Descricao</div>
-				<%= andamento.descricao %>
-			</div>
-			<div id="local" class="atributo">
+				<div id="descricao" class="atributo">
+					<%= Hpricot.parse(andamento.descricao).inner_text %>
+				</div>
 				<div class="meta">Local</div>
-				<%= andamento.local %>
-			</div>
-			<div id="data" class="atributo">
+				<div id="local" class="atributo">
+					<%= andamento.local %>
+				</div>
 				<div class="meta">Data</div>
-				<%= andamento.data %>
+				<div id="data" class="atributo">
+					<%= andamento.data %>
+				</div>
 			</div>
+			<% end -%>
 		</div>
-		<% end -%>
 	</div>
 
 	<div class="nav_container">

@@ -6,3 +6,4 @@ db/sphinx/*
 db/production_data*
 db/db/*
 solr/*
+tmp/*
