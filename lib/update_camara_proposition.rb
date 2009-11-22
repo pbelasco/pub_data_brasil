@@ -1,4 +1,5 @@
 class UpdateCamaraProposition < Struct.new(:id_sileg)
+  
   require 'rubygems'
   require 'hpricot'
   require 'curb'
@@ -9,15 +10,14 @@ class UpdateCamaraProposition < Struct.new(:id_sileg)
     url = make_url(id_sileg)
     puts "mkurl: #{url}"
     parsed_page = get_parsed_page(url)
-    puts "parsing: #{parsed_page}" 
-    proposta = create_or_update_prop(id, parse_prop_detalhes(parsed_page))
-    puts "proposta: #{proposta}" 
-    tags = create_or_update_tags(proposta, parse_tags(parsed_page))
-    puts "tags: #{tags}"
-    andamentos = parse_and_create_andamentos(proposta, get_the_andamento_rows(parsed_page))
-    puts "andamentos: #{andamentos}"
+    # puts "parsing: #{parsed_page.inner_html.gsub(/  /, " ")}" 
     
-    true
+    proposta = create_or_update_prop(id_sileg, parse_prop_detalhes(parsed_page))
+    #     puts "proposta: #{proposta}" 
+    tags = create_or_update_tags(proposta, parse_tags(parsed_page))
+    #     puts "tags: #{tags}"
+    andamentos = parse_andamentos(proposta, parsed_page)
+    create_or_update_andamentos(id_sileg, andamentos)
   end
 
   def make_url(var)
@@ -26,8 +26,6 @@ class UpdateCamaraProposition < Struct.new(:id_sileg)
     url
   end
 
-  # recebe url e devolve hpricot parsed doc string
-  # recebe url e devolve hpricot parsed doc string
   def get_parsed_page(url)
 
     c = Curl::Easy.new("#{url}") do |curl|
@@ -41,20 +39,8 @@ class UpdateCamaraProposition < Struct.new(:id_sileg)
 
     # doc = Hpricot.parse( enc.iconv(c.body_str), :fixup_tags => true )
     doc = Hpricot.parse( enc.iconv(c.body_str) )
-    # puts doc.html
     puts "obtido!"
     doc
-  end
-
-  def get_the_andamento_rows(doc)
-    # Tabela que contem os elementos de andamento
-    puts "selecionando andamentos..."
-    rows = (doc/"//table//table//table//tr")
-    # Elimina o cabeçalho
-    rows.shift
-    puts "encontrei #{rows.size} andamentos"
-    # puts rows.html
-    rows
   end
 
   def parse_tags(doc)
@@ -67,18 +53,11 @@ class UpdateCamaraProposition < Struct.new(:id_sileg)
     prop_detalhes = []
     h = Hash.new("Este andamento")  
     unless doc.nil?
-      # h[:autor] = doc.at('tr/td[2]//tbody').inner_text.split(/:/)[1].strip || nil
-      # h[:autor] = doc.at('table/tbody/tr[2]/td[2]/table/tbody/tr/td[2]/a') || nil
       h[:autor_link] = nil
-
       h[:media_link] = (doc/"/html/body/table//tr[2]/td[2]/a").to_s.map { |s| s.split("HREF=\"")[1].split("\" ")[0] || nil } 
-
       unless (doc/"/html/body/table//tr[2]/td//").html == ""
-
         str = (doc/"/html/body/table//tr[2]/td//").html || ""
-
         spl = str.split(/[Explica][^o ]*o da Ementa: <\/b>/)[1]
-
         unless spl.nil?
           h[:explicacao] =  spl.split("<b>")[0].strip || nil
         end
@@ -95,31 +74,32 @@ class UpdateCamaraProposition < Struct.new(:id_sileg)
           h[:acessoria_de] = spl.to_s.split("<b>")[0] || nil 
         end
       end
-      puts "#{h.inspect}\nDetalhes de Proposta ----------------------------------------" unless h.empty?
-      h
+      return h
     end
   end
-  def parse_and_create_andamentos(proposta, rows)
-    puts "começando parsing dos andamentos..."
+  
+  def parse_andamentos(proposta, doc)
     andamentos = []
 
+    puts "selecionando andamentos..."
+    rows = (doc/"//table//table//table//tr")
+    rows.shift
+    puts "encontrei #{rows.size} andamentos"
+    puts rows.inspect
+
     rows.each do |row| 
-      unless row.empty? 
+      unless row.empty? || row.nil?
         # link que contem o id e o cod/ano da proposicao
-        h = Hash.new("Este andamento")  
+        h = Hash.new("Este andamento")
         h[:local] = (row/"b").first.inner_html.to_s.strip.split("&nbsp;").join(" ").gsub(/(\r\n)|\t/, "") || nil
         h[:descricao] = (row/"td")[1].html.to_s.split("<br />")[1].strip || nil
         h[:data] = (row/"td")[0].inner_html.to_s.strip.split("/").reverse.join("-") || nil
         h[:media_link] = (row/'a[@HREF]').to_s.map { |s| s.split("HREF=\"")[1].split("\" ")[0] || nil }
-        h[:id_sileg] = @parsed_vars[0]
-
-        puts "#{h.inspect}\nAndamento --------------------------------------------------" unless row.empty?
+        h[:id_sileg] = proposta.id_sileg
         andamentos << h
       end 
     end   
-    create_or_update_andamentos(:id_sileg, andamentos, proposta)
-    puts "criados/atualizados #{andamentos.size} registros"
-    andamentos
+    return andamentos
   end
 
   def inspect_detalhes(h)
@@ -135,14 +115,15 @@ class UpdateCamaraProposition < Struct.new(:id_sileg)
       p = Proposicao.create(h)
       puts "proposicao criada"
     end
-    p
+    return p
   end
 
-  def create_or_update_andamentos(fields, novos_andamentos, proposta)
-    proposta.andamentos.each {|a| a.destroy} unless proposta.andamentos.empty?
+  def create_or_update_andamentos(id_proposta, novos_andamentos)
+    prop = Proposicao.find_by_id_sileg(id_proposta)
+    prop.andamentos.each {|a| a.destroy} 
     novos_andamentos.each do |h|
       a = Andamento.create(h)
-      proposta.andamentos << a
+      prop.andamentos << a
     end
   end
 

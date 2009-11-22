@@ -42,11 +42,10 @@ class ProposicaosController < ApplicationController
   def show
     @proposicao = Proposicao.find_by_id_sileg(params[:id], :include => :andamentos)
     if @proposicao.ellegible_for_update 
-      
+      flash[:notice] = "A proposição que você está visualizando pode não estar atualizada. Uma atualização do conteúdo já foi agendada..."
       Delayed::Job.enqueue(UpdateCamaraProposition.new(params[:id]), 1)
-      flash[:notice] = "A proposição será atualizada..."
-        
     end
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => [@proposicao] }

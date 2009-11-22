@@ -7,7 +7,8 @@ class Proposicao < ActiveRecord::Base
   acts_as_solr :fields => [:autor, :id_sileg, :ementa, :apresentacao, :despacho, :apreciacao, :descricao]
   
   def ellegible_for_update
-    self.created_at == self.updated_at || self.updated_at < Time.now - 7.day  
+    # self.created_at == self.updated_at || self.updated_at < Time.now - 7.day
+    self.updated_at < Time.now - 7.day
   end
 
 end
