@@ -41,9 +41,9 @@ namespace :solr do
   end
 end
 
-after "deploy:start", "delayed_job:start" 
-after "deploy:stop", "delayed_job:stop" 
-after "deploy:restart", "delayed_job:restart"
+after "deploy:start", "solr:start" 
+after "deploy:stop", "solr:stop" 
+after "deploy:restart", "solr:restart"
 
 namespace :db do
   desc 'Dumps the production database to db/production_data.sql on the remote server'

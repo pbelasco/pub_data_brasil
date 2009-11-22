@@ -120,7 +120,9 @@ def parse_elements_and_create(rows)
       props << h
       
       if nova_proposicao = Proposicao.find_by_id_sileg(h[:id_sileg]) 
-        nova_proposicao.update_attributes(h)
+        # nova_proposicao.update_attributes(h)
+        nova_proposicao.destroy
+        nova_proposicao = Proposicao.create(h)
       else 
         nova_proposicao = Proposicao.create(h)
       end

@@ -9,14 +9,10 @@ class UpdateCamaraProposition < Struct.new(:id_sileg)
     puts "Atualizando proposicao #{id_sileg} da Camara Federal"
     url = make_url(id_sileg)
     puts "mkurl: #{url}"
-    parsed_page = get_parsed_page(url)
-    # puts "parsing: #{parsed_page.inner_html.gsub(/  /, " ")}" 
-    
+    parsed_page = get_parsed_page(url)    
     prop_hash = parse_prop_detalhes(parsed_page)
     proposta = create_or_update_prop(id_sileg, prop_hash)
-    #     puts "proposta: #{proposta}" 
     tags = create_or_update_tags(proposta, parse_tags(parsed_page))
-    #     puts "tags: #{tags}"
     andamentos = parse_andamentos(proposta, parsed_page)
     create_or_update_andamentos(id_sileg, andamentos)
   end
