@@ -2,24 +2,48 @@ set :stages, %w(staging production)
 set :default_stage, "staging"
 require File.expand_path("#{File.dirname(__FILE__)}/../vendor/gems/capistrano-ext-1.2.1/lib/capistrano/ext/multistage")
 
-namespace :sphinx do
-  desc "Stop the sphinx server"
-  task :stop_sphinx , :roles => :app do
-    run "cd #{current_path} && rake thinking_sphinx:stop RAILS_ENV=#{rails_env}"
+namespace :delayed_job do
+  desc "Start delayed_job process" 
+  task :start, :roles => :app do
+    run "cd #{current_path}; script/delayed_job start #{rails_env}" 
   end
 
-  desc "Start the sphinx server" 
-  task :start_sphinx, :roles => :app do
-    run "cd #{current_path} && rake thinking_sphinx:configure RAILS_ENV=#{rails_env} && rake thinking_sphinx:start RAILS_ENV=#{rails_env}"
+  desc "Stop delayed_job process" 
+  task :stop, :roles => :app do
+    run "cd #{current_path}; script/delayed_job stop #{rails_env}" 
   end
 
-  desc "Restart the sphinx server"
-  task :restart_sphinx, :roles => :app do
-    stop_sphinx
-    start_sphinx
-  end  
+  desc "Restart delayed_job process" 
+  task :restart, :roles => :app do
+    run "cd #{current_path}; script/delayed_job restart #{rails_env}" 
+  end
 end
 
+after "deploy:start", "delayed_job:start" 
+after "deploy:stop", "delayed_job:stop" 
+after "deploy:restart", "delayed_job:restart" 
+
+namespace :solr do
+  desc "Start solr process" 
+  task :start, :roles => :app do
+    run "cd #{latest_release} && #{rake} solr:start RAILS_ENV=production 2>/dev/null"
+  end
+  
+  desc "Stop solr process" 
+  task :stop, :roles => :app do
+    run "cd #{latest_release} && #{rake} solr:stop RAILS_ENV=production 2>/dev/null"
+  end
+
+  desc "Restart solr process" 
+  task :restart, :roles => :app do
+    solr.stop
+    solr.start
+  end
+end
+
+after "deploy:start", "delayed_job:start" 
+after "deploy:stop", "delayed_job:stop" 
+after "deploy:restart", "delayed_job:restart"
 
 namespace :db do
   desc 'Dumps the production database to db/production_data.sql on the remote server'

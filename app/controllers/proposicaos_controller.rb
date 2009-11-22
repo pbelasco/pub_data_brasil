@@ -7,10 +7,12 @@ class ProposicaosController < ApplicationController
   def index
    
     @num_proposicaos = Proposicao.count(:all)
-    # @posts = Post.paginate :page => params[:page], :per_page => 50
-    # @posts = Post.paginate_by_board_id @board.id, :page => params[:page], :order => 'updated_at DESC'
-      @proposicaos = Proposicao.paginate(:page => params[:page], :per_page => 10, :order => 'apresentacao DESC', :include => :andamentos)
-    
+    @proposicaos = Proposicao.paginate(:page => params[:page], :per_page => 10, :order => 'apresentacao DESC', :include => :andamentos)
+    @proposicaos.each do |p| 
+      if p.ellegible_for_update 
+        Delayed::Job.enqueue(UpdateCamaraProposition.new( p.id_sileg), 0) 
+      end
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @proposicaos }
@@ -24,7 +26,11 @@ class ProposicaosController < ApplicationController
       params[:page] = 1 unless params[:page]
       
       count = Proposicao.count_by_solr(params[:q])
-      @proposicaos = Proposicao.paginate_all_by_solr("#{params[:q]}", :page => params[:page], :total_entries => count)
+      @proposicaos = Proposicao.find_by_solr("#{params[:q]}", {:limit => 10, :offset => params[:page], :order => 'apresentacao desc', :highlight => { :fields => 'ementa', :prefix => '<em>', :suffix => '</em>' } })
+      @proposicaos.highlights
+      @proposicaos.docs.each { |doc| @proposicaos.highlights[doc.id][:ementa] }
+        
+      
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @proposicaos }

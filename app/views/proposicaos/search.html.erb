@@ -1,14 +1,19 @@
-<h1><%= "#{@total_hits}" %> 
+<h1><%= "#{@proposicaos.total_hits}" %> 
 Resultados para <span class="highlight"><%= "'#{params[:q]}'" %></span>
 	</h1>
-<%= will_paginate @proposicaos %>
-<% @proposicaos.each do |proposicao| %>
-	<%= render :partial => 'proposicao', :collection => @proposicaos %>
-<% end unless @proposicaos.empty? %>
-<%= will_paginate @proposicaos %>
+	<%= will_paginate WillPaginate::Collection.new(
+		(params[:page]||1), (params[:results_per_page]||10),@proposicaos.total_hits), 
+		{ :previous_label => '&laquo; Anterior', :next_label => 'Próxima &raquo;'} -%>
+		
+	<%= render :partial => 'proposicao', :collection => @proposicaos.docs %>
+	
+	<%= will_paginate WillPaginate::Collection.new(
+		(params[:page]||1), (params[:results_per_page]||10),@proposicaos.total_hits), 
+		{ :previous_label => '&laquo; Anterior', :next_label => 'Próxima &raquo;'} -%>
 
 <% content_for :menu do %>
 	<ul class="menu">
 		<li>Proposições</li>
 	</ul>
+
 <% end %>
