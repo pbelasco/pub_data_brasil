@@ -12,7 +12,8 @@ class UpdateCamaraProposition < Struct.new(:id_sileg)
     parsed_page = get_parsed_page(url)
     # puts "parsing: #{parsed_page.inner_html.gsub(/  /, " ")}" 
     
-    proposta = create_or_update_prop(id_sileg, parse_prop_detalhes(parsed_page))
+    prop_hash = parse_prop_detalhes(parsed_page)
+    proposta = create_or_update_prop(id_sileg, prop_hash)
     #     puts "proposta: #{proposta}" 
     tags = create_or_update_tags(proposta, parse_tags(parsed_page))
     #     puts "tags: #{tags}"
@@ -49,8 +50,7 @@ class UpdateCamaraProposition < Struct.new(:id_sileg)
   end
 
   def parse_prop_detalhes(doc)
-    puts "começando parsing dos andamentos..."
-    prop_detalhes = []
+    puts "começando parsing da proposicao..."
     h = Hash.new("Este andamento")  
     unless doc.nil?
       h[:autor_link] = nil
@@ -80,13 +80,11 @@ class UpdateCamaraProposition < Struct.new(:id_sileg)
   
   def parse_andamentos(proposta, doc)
     andamentos = []
-
     puts "selecionando andamentos..."
     rows = (doc/"//table//table//table//tr")
     rows.shift
     puts "encontrei #{rows.size} andamentos"
     puts rows.inspect
-
     rows.each do |row| 
       unless row.empty? || row.nil?
         # link que contem o id e o cod/ano da proposicao
