@@ -1,34 +1,29 @@
-class RefreshPropositionWorker < BackgrounDRb::MetaWorker
-  set_worker_name :refresh_proposition_worker
-  
+class UpdateCamaraProposition < Struct.new(:id_sileg)
   require 'rubygems'
   require 'hpricot'
   require 'curb'
   require "iconv"
   
-  def create(args = nil)
-    # this method is called, when worker is loaded for the first time
-    self.run(args)
-  end
-
- 
-
-  # recebe Input e retorna parsed_vars ou false em caso de erro
-  def parse_input(input_args)
-
-    parsed_vars = []
-    if args[0].to_s.include?('id=')
-      puts "ok, começando..."
-      parsed_vars << input_args[0].split("=")[1]
-      parsed_vars
-    else 
-      puts "erro. parando'"
-      return nil
-    end
+  def perform
+    puts "Atualizando proposicao #{id_sileg} da Camara Federal"
+    url = make_url(id_sileg)
+    puts "mkurl: #{url}"
+    parsed_page = get_parsed_page(url)
+    puts "parsing: #{parsed_page}" 
+    proposta = create_or_update_prop(id, parse_prop_detalhes(parsed_page))
+    puts "proposta: #{proposta}" 
+    tags = create_or_update_tags(proposta, parse_tags(parsed_page))
+    puts "tags: #{tags}"
+    andamentos = parse_and_create_andamentos(proposta, get_the_andamento_rows(parsed_page))
+    puts "andamentos: #{andamentos}"
+    
+    true
   end
 
   def make_url(var)
     url = "http://www.camara.gov.br/sileg/Prop_Detalhe.asp?id=#{var}"
+    puts url.to_s
+    url
   end
 
   # recebe url e devolve hpricot parsed doc string
@@ -36,46 +31,19 @@ class RefreshPropositionWorker < BackgrounDRb::MetaWorker
   def get_parsed_page(url)
 
     c = Curl::Easy.new("#{url}") do |curl|
-      curl.headers["User-Agent"] = "pub_data client v.001Beta Ruby"
+      curl.headers["User-Agent"] = "Legisdados v.001"
       curl.verbose = true
-      curl.verbose = false
     end
     puts "tentando obter resultado de #{url}"
-
-    c = perform_req(c)
-    # cuida do encoding
+    # c = perform_req(c)
+    c.perform
     enc = Iconv.new('UTF-8', 'ISO-8859-1')
 
     # doc = Hpricot.parse( enc.iconv(c.body_str), :fixup_tags => true )
     doc = Hpricot.parse( enc.iconv(c.body_str) )
     # puts doc.html
+    puts "obtido!"
     doc
-  end
-
-  # Método recursivo para realizar requisição dados do servidor
-  def perform_req(curl_obj)
-    c = curl_obj
-
-    begin 
-      c.perform
-      if c.response_code != 200 
-        puts "código de resposta: #{c.response_code}"
-        puts "aguardando 20 segundos para tentar novamente..."
-        sleep 20
-        c = perform_req(curl_obj)
-      else 
-        return c # Condição de parada na pilha
-      end
-    rescue Exception => e
-      puts e.inspect
-      puts "erro no servidor, devolvendo nulo"
-      puts "aguardando 20 segundos para tentar novamente..."
-      sleep 20
-      return perform_req(c)
-    rescue NoMethodError => e
-      puts "erro no programa... matando a pau... ratatatata tatatata..."
-      nil
-    end
   end
 
   def get_the_andamento_rows(doc)
@@ -90,8 +58,10 @@ class RefreshPropositionWorker < BackgrounDRb::MetaWorker
   end
 
   def parse_tags(doc)
+    puts "parsenado tags"
     tags = doc.html.split(/[Indexa][^o ]*o: <\/b>/)[1].split("<b>")[0].strip || nil
   end
+
   def parse_prop_detalhes(doc)
     puts "começando parsing dos andamentos..."
     prop_detalhes = []
@@ -108,6 +78,7 @@ class RefreshPropositionWorker < BackgrounDRb::MetaWorker
         str = (doc/"/html/body/table//tr[2]/td//").html || ""
 
         spl = str.split(/[Explica][^o ]*o da Ementa: <\/b>/)[1]
+
         unless spl.nil?
           h[:explicacao] =  spl.split("<b>")[0].strip || nil
         end
@@ -121,7 +92,7 @@ class RefreshPropositionWorker < BackgrounDRb::MetaWorker
           h[:despacho]   =  spl.split("<b>")[0].strip || nil 
         end
         if spl = str.split(/[Acess][^r]*[ria de: <\/b>]/)[1]
-          h[:acessoria_de] = spl.split("<b>")[0].strip || nil 
+          h[:acessoria_de] = spl.to_s.split("<b>")[0] || nil 
         end
       end
       puts "#{h.inspect}\nDetalhes de Proposta ----------------------------------------" unless h.empty?
@@ -137,7 +108,8 @@ class RefreshPropositionWorker < BackgrounDRb::MetaWorker
         # link que contem o id e o cod/ano da proposicao
         h = Hash.new("Este andamento")  
         h[:local] = (row/"b").first.inner_html.to_s.strip.split("&nbsp;").join(" ").gsub(/(\r\n)|\t/, "") || nil
-        h[:data] = (row/"td")[0].inner_html.strip.split("/").reverse.join("-") || nil
+        h[:descricao] = (row/"td")[1].html.to_s.split("<br />")[1].strip || nil
+        h[:data] = (row/"td")[0].inner_html.to_s.strip.split("/").reverse.join("-") || nil
         h[:media_link] = (row/'a[@HREF]').to_s.map { |s| s.split("HREF=\"")[1].split("\" ")[0] || nil }
         h[:id_sileg] = @parsed_vars[0]
 
@@ -146,7 +118,6 @@ class RefreshPropositionWorker < BackgrounDRb::MetaWorker
       end 
     end   
     create_or_update_andamentos(:id_sileg, andamentos, proposta)
-
     puts "criados/atualizados #{andamentos.size} registros"
     andamentos
   end
@@ -159,8 +130,10 @@ class RefreshPropositionWorker < BackgrounDRb::MetaWorker
     p = Proposicao.find_by_id_sileg(id_sileg)
     if p
       p.update_attributes(h) 
+      puts "proposicao atualizada"
     else
       p = Proposicao.create(h)
+      puts "proposicao criada"
     end
     p
   end
@@ -174,7 +147,6 @@ class RefreshPropositionWorker < BackgrounDRb::MetaWorker
   end
 
   def create_or_update_tags(proposta, tags_str)
-    puts "Tags ---------------------------------------------------"
     tags_str.split(",").each do |t|
       unless t.strip.match("^[_].*|[<br />]") 
         tag = Tag.find_by_termo(t)
@@ -190,29 +162,9 @@ class RefreshPropositionWorker < BackgrounDRb::MetaWorker
   end
 
   def inspect_tags(tags_str = "")
-
     tags_str.split(",").each do |t|
       puts t.strip unless t.strip.match("^[_].*") 
     end
-    puts "Tags   --------------------------------------------------" 
-
   end
 
-
-  def run(id = nil)
-     # parsed_input = parse_input(str)
-     # puts parsed_input.inspect
-     unless id.nil? 
-       # parsed_input.each do |id|
-         url = make_url(id)
-         parsed_page = get_parsed_page(url)
-         proposta = create_or_update_prop(id, parse_prop_detalhes(parsed_page))
-         create_or_update_tags(proposta, parse_tags(parsed_page))
-         andamentos = parse_and_create_andamentos(proposta, get_the_andamento_rows(parsed_page))
-         true
-       # end  
-     end
-
-   end
 end
-

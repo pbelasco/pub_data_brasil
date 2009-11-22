@@ -40,11 +40,12 @@ class ProposicaosController < ApplicationController
   # GET /proposicaos/1
   # GET /proposicaos/1.xml
   def show
-    # @proposicao = Proposicao.find(params[:id])
     @proposicao = Proposicao.find_by_id_sileg(params[:id], :include => :andamentos)
     if @proposicao.ellegible_for_update 
-     # Bj.submit "./script/runner ./runners/scrap_propositions_detalhes.rb 'id=#{@proposicao.id_sileg}'", :log => 'log/bj'
-        flash[:notice] = "A proposição poderia estar sendo atualizada. Aguarde..."
+      
+      Delayed::Job.enqueue(UpdateCamaraProposition.new(params[:id]), 1)
+      flash[:notice] = "A proposição será atualizada..."
+        
     end
     respond_to do |format|
       format.html # show.html.erb
