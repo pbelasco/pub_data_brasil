@@ -17,7 +17,7 @@ class ProposicaosController < ApplicationController
       format.html # index.html.erb
       format.xml  { render :xml => @proposicaos }
       format.json { render :json => @proposicaos.to_json }
-      format.yaml { render :inline => [@proposicaos.to_yaml, @proposicaos.map {|p| p.to_yaml}] }
+      format.yaml { render :inline => [@proposicaos.to_yaml, @proposicaos.docs.map {|p| p.to_yaml}] }
     end
   end
 
@@ -25,17 +25,19 @@ class ProposicaosController < ApplicationController
     unless params[:q].blank?
       params[:page] = 1 unless params[:page]
       
-      count = Proposicao.count_by_solr(params[:q])
-      @proposicaos = Proposicao.find_by_solr("#{params[:q]}", {:limit => 10, :offset => params[:page], :order => 'apresentacao desc', :highlight => { :fields => 'ementa', :prefix => '<em>', :suffix => '</em>' } })
-      @proposicaos.highlights
-      @proposicaos.docs.each { |doc| @proposicaos.highlights[doc.id][:ementa] }
-        
+      @proposicaos = Proposicao.find_by_solr("#{params[:q]}", {:limit => 10, :offset => params[:page], :order => 'apresentacao desc' })
+      
+      @proposicaos.docs.each do |p| 
+        if p.ellegible_for_update 
+          Delayed::Job.enqueue(UpdateCamaraProposition.new( p.id_sileg), 0) 
+        end
+      end
       
       respond_to do |format|
         format.html # index.html.erb
-        format.xml  { render :xml => @proposicaos }
-        format.json { render :json =>  [@proposicao.to_json, @proposicaos.map {|p| p.to_json}] }
-        format.yaml { render :inline =>  [@proposicao.to_yaml, @proposicaos.map {|p| p.to_yaml}] }
+        format.xml  { render :xml => @proposicaos.docs }
+        format.json { render :json =>  [@proposicao.to_json, @proposicaos.docs.map {|p| p.to_json}] }
+        format.yaml { render :inline =>  [@proposicao.to_yaml, @proposicaos.docs.map {|p| p.to_yaml}] }
       end
     else
       flash[:notice] = "Por favor informe uma chave de pesquisa"

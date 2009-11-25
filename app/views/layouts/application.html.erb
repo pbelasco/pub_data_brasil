@@ -18,13 +18,16 @@
 
 			<div id="top_panel">
 				<div class="user_nav">
-					<% if current_user %>
+					<!-- <% if current_user %>
 					<%= current_user.name %> | 
 					<%= link_to "Sair", user_path(current_user, :method => :delete, :confirm => "sair?") %>
 					<% else %>
 					<%= link_to "Registrar-se", new_user_path %> | 
 					<%= link_to "Entrar", new_user_session_path %>
-					<% end %>
+					<% end %> -->
+					<%= p = Proposicao.count :all %> Proposições. 
+					<% pok = Proposicao.count :all, :conditions => 'created_at < updated_at' %>
+                    <%= "%f" % ((pok.to_f/p.to_f) * 100)   %>% Atualizado.
 				</div>
 				<%= render :partial => 'shared/search_form' %>
 			</div>
@@ -48,5 +51,14 @@
 		</div>
 		<div id="ft" class="footer_container"><small>LegisDados. v 0.0.1b.</small></div>
 	</div>
+	<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+	try {
+	var pageTracker = _gat._getTracker("UA-11357766-1");
+	pageTracker._trackPageview();
+	} catch(err) {}</script>
 </body>
 </html>

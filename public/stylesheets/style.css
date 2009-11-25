@@ -65,6 +65,7 @@ body {
 .meta {
 	font-weight:600;
 	float: left;
+	clear:both;
 }
 .atributo {
 margin: 0 0 0 200px;

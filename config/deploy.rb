@@ -5,17 +5,17 @@ require File.expand_path("#{File.dirname(__FILE__)}/../vendor/gems/capistrano-ex
 namespace :delayed_job do
   desc "Start delayed_job process" 
   task :start, :roles => :app do
-    run "cd #{current_path}; script/delayed_job start #{rails_env}" 
+    run "cd #{current_path}; script/delayed_job start RAILS_ENV=#{rails_env}" 
   end
 
   desc "Stop delayed_job process" 
   task :stop, :roles => :app do
-    run "cd #{current_path}; script/delayed_job stop #{rails_env}" 
+    run "cd #{current_path}; script/delayed_job stop RAILS_ENV=#{rails_env}" 
   end
 
   desc "Restart delayed_job process" 
   task :restart, :roles => :app do
-    run "cd #{current_path}; script/delayed_job restart #{rails_env}" 
+    run "cd #{current_path}; script/delayed_job restart RAILS_ENV=#{rails_env}" 
   end
 end
 
@@ -26,12 +26,12 @@ after "deploy:restart", "delayed_job:restart"
 namespace :solr do
   desc "Start solr process" 
   task :start, :roles => :app do
-    run "cd #{latest_release} && #{rake} solr:start RAILS_ENV=production 2>/dev/null"
+    run "cd #{latest_release} && #{rake} solr:start RAILS_ENV=#{rails_env}  2>/dev/null"
   end
   
   desc "Stop solr process" 
   task :stop, :roles => :app do
-    run "cd #{latest_release} && #{rake} solr:stop RAILS_ENV=production 2>/dev/null"
+    run "cd #{latest_release} && #{rake} solr:stop RAILS_ENV=#{rails_env} 2>/dev/null"
   end
 
   desc "Restart solr process" 
