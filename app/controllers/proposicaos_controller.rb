@@ -22,10 +22,12 @@ class ProposicaosController < ApplicationController
   end
 
   def search
+    require 'extended_string'
+    
     unless params[:q].blank?
       params[:page] = 1 unless params[:page]
       
-      @proposicaos = Proposicao.find_by_solr("#{params[:q]}", {:limit => 10, :offset => params[:page], :order => 'apresentacao desc' })
+      @proposicaos = Proposicao.find_by_solr("#{params[:q].strip_diacritics}", {:limit => 10, :offset => params[:page] })
       
       @proposicaos.docs.each do |p| 
         if p.ellegible_for_update 
