@@ -99,7 +99,7 @@
 	<div class="campo">
 		<div class="meta">(<%= proposicao.andamentos.count(:id) %>) Andamentos - Último movimento</div>
 		<div id="<%= "andamentos-#{proposicao.id}" %>" class="associacao">		
-			<% andamento = proposicao.andamentos.find(:first, :order => "data DESC") %>
+			<% if andamento = proposicao.andamentos.find(:first, :order => "data DESC") %>
 			<div class="andamento">
 				<div class="meta">Descricao</div>
 				<div id="descricao" class="atributo">
@@ -114,6 +114,7 @@
 					<%= andamento.data %>
 				</div>
 			</div>
+			<% end %>
 		</div>
 	</div>
 

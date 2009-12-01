@@ -47,7 +47,7 @@ class PaginasController < ApplicationController
 
     respond_to do |format|
       if @pagina.save
-        flash[:notice] = 'Pagina was successfully created.'
+        flash[:notice] = 'A página foi criada.'
         format.html { redirect_to(@pagina) }
         format.xml  { render :xml => @pagina, :status => :created, :location => @pagina }
       else
@@ -64,7 +64,7 @@ class PaginasController < ApplicationController
 
     respond_to do |format|
       if @pagina.update_attributes(params[:pagina])
-        flash[:notice] = 'Pagina was successfully updated.'
+        flash[:notice] = 'A página foi atualizada com sucesso.'
         format.html { redirect_to(@pagina) }
         format.xml  { head :ok }
       else
