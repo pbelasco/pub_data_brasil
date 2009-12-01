@@ -6,7 +6,7 @@
 <% @paginas.each do |pagina| %>
 <div class="promo">
     <h3><%=h pagina.titulo %></h3>
-    <%= RedCloth.new(pagina.conteudo[0..140] + ". . ." ).to_html %>
+    <%= RedCloth.new(pagina.conteudo[0..450] + "..." ).to_html %>
 	<% if current_user %>
     	<%= link_to 'Editar', edit_pagina_path(pagina) %>
 	<% end %>

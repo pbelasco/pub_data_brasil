@@ -1,17 +1,18 @@
 <% content_for :menu do %>
-	<%= render :partial => 'menu', :locals => { :secoes => @secoes } %>
+<%= render :partial => 'menu', :locals => { :secoes => @secoes } %>
 <% end -%>
 
 <% content_for :content do %>
 <p>
-  <h1> <%=h @pagina.titulo %> <br />
-	<small>
-		 <%=h @pagina.secao %>
-	</small> 
+	<h1> <%=h @pagina.titulo %> <br />
+		<small>
+			<%=h @pagina.secao %>
+		</small> 
 	</h1>
 </p>
-  <%= RedCloth.new(@pagina.conteudo).to_html %>
-  <%= link_to 'Editar', edit_pagina_path(@pagina) %>
-
+<%= RedCloth.new(@pagina.conteudo).to_html %>
+	<% if current_user %>
+		<%= link_to 'Editar', edit_pagina_path(@pagina) %>
+	<% end -%>
 <% end -%>
 
