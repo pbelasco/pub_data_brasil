@@ -7,19 +7,23 @@ p {margin: 1em 0;}
 ul, ol { margin-left:2em; }
 ul li {list-style-type: circle;}
 ol li {list-style-type: decimal;}
+a {color: #77d;}
+html {
+	background: #000 url(/images/bg.jpg) no-repeat 0 0;
+}
 body {
-	margin:.5em;
 	padding:0;
 	font-family:Helvetica, Arial, sans;
 	font-size:.8em;
 	line-height: 1.4em;
+	color: #ddd;
 }
 #ft {
 	border-top: 1px solid #666;
 }
 #content {
 	border-left: 1px solid #666;
-	padding: 0 0 0 .5em;*/
+	margin: 5em 0 0 .5em;*/
 }
 #content-1col {
 	width: 150%;
@@ -27,6 +31,7 @@ body {
 #hd {
 	border-bottom: 1px solid #666;
 	padding: .5em 0 0 0;
+	text-align: right;
 }
 #bd {}
 #top_panel {
@@ -43,20 +48,18 @@ body {
 .menu li {
 	padding: .1em;
 	font-weight: 600;
-	border-bottom: 1px solid #666;
 	list-style-type: none;
 }
 .menu li a {
 	text-decoration: none;
 }
 .proposicao, .andamento {
-	border-bottom: 1px #666 solid;
 	padding:.5em;
 	margin:.5em;
 }
 .campo {
 	clear:both;
-	border-bottom:1px solid #ccc;
+	/*border-bottom:1px solid #ccc;*/
 	min-height: 1.3em;
 }
 .associacao {
@@ -101,7 +104,7 @@ margin: 0 0 0 200px;
 	margin:1em 0 2em 0;
 	padding:0;
 	padding:.3em;
-	border: 1px solid #ccf;
+	/*border: 1px solid #ccf;*/
 }
 
 .disablepage {
@@ -119,6 +122,7 @@ margin: 0 0 0 200px;
 /* ================================== */
 
 .highlight {
-	background:#ff0;
+	background:#dd7;
+	color:#333;
 	padding:.3em;
 }

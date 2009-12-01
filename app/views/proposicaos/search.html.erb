@@ -1,4 +1,4 @@
-<h1><%= "#{@proposicaos.total_hits}" %> 
+<h1><%= "#{@proposicaos.total_hits - 1  }" %> 
 Resultados para <span class="highlight"><%= "'#{params[:q]}'" %></span>
 	</h1>
 	<%= will_paginate WillPaginate::Collection.new(

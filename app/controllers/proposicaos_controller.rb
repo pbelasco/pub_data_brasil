@@ -50,7 +50,8 @@ class ProposicaosController < ApplicationController
   # GET /proposicaos/1
   # GET /proposicaos/1.xml
   def show
-    @proposicao = Proposicao.find_by_id_sileg(params[:id], :include => :andamentos)
+    @proposicao = Proposicao.find(params[:id], :include => :andamentos)
+    
     if @proposicao.ellegible_for_update 
       flash[:notice] = "A proposição que você está visualizando pode não estar atualizada. Uma atualização do conteúdo já foi agendada..."
       Delayed::Job.enqueue(UpdateCamaraProposition.new(params[:id]), 1)
