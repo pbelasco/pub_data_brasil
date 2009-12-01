@@ -2,7 +2,7 @@
 	<h3>Seções</h3>
 	<ul class="menu">
 		<h3>Proposições</h3>
-			<li>Listagem de Proposições da Câmara</li>
+			<li><%= link_to "Câmara Federal", proposicaos_path %></li>
 	<% secoes.each do |s| %>
 		<h3><%= s.secao %></h3>
 		<% Pagina.find(:all, :conditions => {:secao => s.secao}).each do |pag| %>
