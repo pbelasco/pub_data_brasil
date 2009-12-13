@@ -31,7 +31,7 @@ class ProposicaosController < ApplicationController
       
       @proposicaos.docs.each do |p| 
         if p.ellegible_for_update 
-          Delayed::Job.enqueue(UpdateCamaraProposition.new( p.id_sileg), 0) 
+          Delayed::Job.enqueue(UpdateCamaraProposition.new( p.id_sileg), 2) 
         end
       end
       
@@ -54,7 +54,7 @@ class ProposicaosController < ApplicationController
     
     if @proposicao.ellegible_for_update 
       flash[:notice] = "A proposição que você está visualizando pode não estar atualizada. Uma atualização do conteúdo já foi agendada..."
-      Delayed::Job.enqueue(UpdateCamaraProposition.new(params[:id]), 1)
+      Delayed::Job.enqueue(UpdateCamaraProposition.new(params[@proposicao.id_sileg]), 1)
     end
     
     respond_to do |format|

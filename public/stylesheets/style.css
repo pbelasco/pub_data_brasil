@@ -7,7 +7,7 @@ p {margin: 1em 0;}
 ul, ol { margin-left:2em; }
 ul li {list-style-type: circle;}
 ol li {list-style-type: decimal;}
-a {color: #77d;}
+a {color: #77d; text-decoration: none;}
 html {
 	background: #000 url(/images/bg.jpg) no-repeat 0 0;
 }

@@ -25,9 +25,9 @@
 					<%= link_to "Registrar-se", new_user_path %> | 
 					<%= link_to "Entrar", new_user_session_path %>
 					<% end %> -->
-					<%= p = Proposicao.count :all %> Proposições. 
-					<% pok = Proposicao.count :all, :conditions => 'created_at < updated_at' %>
-                    <%= "%f" % ((pok.to_f/p.to_f) * 100)   %>% Atualizado.
+					<%= p = Proposicao.count :all %> Proposições. <br />
+					<%= pok = Proposicao.count :all, :conditions => 'created_at < updated_at' %> Completas
+                    <img src="http://chart.apis.google.com/chart?cht=gom&chd=t:<%= "%f" % ((pok.to_f/p.to_f) * 100)   %>&chs=100x50&chf=bg,s,000000" alt="<%= "%f" % ((pok.to_f/p.to_f) * 100)   %> por cento atualizado" title="<%= "%f" % ((pok.to_f/p.to_f) * 100)   %> porcento atualizado" />
 				</div>
 				<%= render :partial => 'shared/search_form' %>
 			</div>
