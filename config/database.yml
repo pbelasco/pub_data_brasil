@@ -2,11 +2,13 @@
 #   gem install sqlite3-ruby (not necessary on OS X Leopard)
 development:
   adapter: mysql
-  database: pdata
+  database: legisdados
   username: root
-  password: ''
+  host: localhost
+  password: 
   pool: 10
   timeout: 5000
+
 test:
   adapter: mysql
   database: pdata_test
@@ -15,3 +17,11 @@ test:
   pool: 10
   timeout: 5000
 
+production:
+  adapter: mysql
+  database: legisdados_production
+  username: legisdados
+  host: localhost
+  password: lo9ki8
+  pool: 10
+  timeout: 5000

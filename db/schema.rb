@@ -146,6 +146,8 @@ ActiveRecord::Schema.define(:version => 20091122143010) do
     t.string   "autor_link"
   end
 
+  add_index "proposicaos", ["id_sileg"], :name => "index_proposicaos_on_id_sileg"
+
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"

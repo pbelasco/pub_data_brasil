@@ -8,7 +8,6 @@ class ProposicaosController < ApplicationController
     sort = case params['sort']
               when "data"   then "apresentacao DESC"
               when "data_reverse" then "apresentacao ASC"
-                
               when "name_reverse"  then "name DESC"
               when "qty_reverse"   then "quantity DESC"
               when "price_reverse" then "price DESC"
@@ -35,8 +34,7 @@ class ProposicaosController < ApplicationController
     unless params[:q].blank?
       params[:page] = 1 unless params[:page]
       
-      @proposicaos = Proposicao.find_by_solr("#{params[:q].strip_diacritics}", {:limit => 10, :offset => params[:page] })
-      
+      @proposicaos = Proposicao.search("#{params[:q].strip_diacritics}", {:limit => 10, :offset => params[:page] })
       
       respond_to do |format|
         format.html # index.html.erb

@@ -5,6 +5,10 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :paginas
 
+  map.trends 'trends',  :method => :get, :controller => :trends, :action => :index
+  map.trends_compare 'trends_results', :method => :post, :controller => :trends, :action => :compare
+
+
   map.login "login", :controller => "user_sessions", :action => 'new'
   map.login "logout", :controller => "user_sessions", :action => 'destroy'
   map.search_proposicaos 'proposicoes/busca', :controller => 'proposicaos', :action => 'search', :method => :get

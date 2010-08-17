@@ -1,0 +1,26 @@
+<%- content_for :additional_headers do %>
+ <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Ano');
+        data.addColumn('number', '<%=params[:t1]%>');
+        data.addColumn('number', '<%=params[:t2]%>');
+        data.addRows(<%= @r_all.to_json %>);
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, {width: 670, height: 440, title: 'Comparativo de Termos', 
+                          hAxis: {title: 'Ano', titleColor:'#FF0000'}
+                         });
+      }
+    </script>
+<%- end %>
+<%- form_tag trends_compare_url  do %>
+	<p>
+	<%= text_field_tag 't1' %> vs <%= text_field_tag 't2' %> <%= submit_tag 'comparar' %>
+	</p>
+<%- end %>
+<div id="chart_div"></div>
+
+<p>As ocorrências dos termos presentes nessa análise são extraídas do site da câmara e tem caráter meramente ilustrativo. Para mais informações, entre em <a href="mailto:pedro@estudiocromatica.com">contato</a></p>
