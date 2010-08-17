@@ -5,6 +5,7 @@ development:
 test:
   enable_star: true
 production:
+  port: 9419
   searchd_file_path: "/home/legisdados/shared/system/sphinx/production"
   bin_path: "/usr/local/bin"
   searchd_binary_name: "searchd"
